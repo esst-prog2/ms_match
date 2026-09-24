@@ -59,7 +59,7 @@ body {
 }
 
 /* the ONE building block: a white paper card with a wine line and a pink shadow */
-.stage, .slot-card, .closet-item, .saved-item, .model-picker img {
+.stage, .pin, .slot-card, .closet-item, .saved-item, .model-picker img {
   background: #fff;
   color: var(--wine);
   border: 1px solid var(--wine);
@@ -191,51 +191,46 @@ body {
 .stage-col .note.n3 { position: absolute; left: -6px; top: 10px; transform: rotate(-6deg); }
 .stage-col .note.n4 { position: absolute; right: -4px; bottom: 76px; transform: rotate(4deg); }
 
-/* A piece sits on the body. --px/--py are the centre as a percentage of the
-   stage, --pw the width; app.js writes all three from the stored placement. */
-/* multiply drops the plain light background of a self-shot piece into the photo
-   behind it, so nothing has to be cut out by hand. It sits on .pin and not on
-   the image: .pin is transformed, which makes it a stacking context, and a
-   blend applied inside that context would blend against the pin itself -
-   computing to "multiply" while changing nothing on screen. */
+/* A piece is a polaroid: an even white border on three sides, a deep one at
+   the bottom for the name, and a pin holding it to the board. The frame is
+   padding rather than an image, so it stays crisp at any card width. */
 .pin {
   position: absolute;
-  left: var(--px, 50%); top: var(--py, 50%);
-  width: var(--pw, 34%); aspect-ratio: 3 / 4;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(.85) rotate(var(--tilt, 0deg));
+  width: 26%; aspect-ratio: 3 / 4;
+  padding: 7px 7px 31px;
+  opacity: 0; transform: scale(.85);
   transition: opacity .25s, transform .25s;
-  pointer-events: none;
-  mix-blend-mode: multiply;
 }
-/* contain keeps the whole garment in frame; the blend hides the empty edges */
-.pin img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.pin.on { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--tilt, 0deg)); }
+.pin img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pin.on { opacity: 1; transform: scale(1) rotate(var(--tilt, 0deg)); }
+.pin-top    { left: 4%;  top: 7%;   --tilt: -4deg; }
+.pin-extra  { right: 4%; top: 11%;  --tilt: 3deg; }
+.pin-bottom { right: 5%; top: 43%;  --tilt: -2deg; }
+.pin-shoes  { left: 5%;  bottom: 7%; --tilt: 3deg; }
 
-/* adjust mode: the pieces become draggable, everything else stays put */
-.adjust-btn {
-  position: absolute; right: 8px; top: 8px; z-index: 3;
-  font: 500 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
-  padding: 7px 11px; cursor: pointer;
-  background: #fff; color: var(--wine);
-  border: 1px solid var(--wine); box-shadow: 3px 3px 0 var(--blush);
+/* the name, written into the margin the bottom padding leaves */
+.pin .cap {
+  position: absolute; left: 7px; right: 7px; bottom: 3px;
+  font: 500 13px/1.4 var(--hand); color: var(--wine);
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.stage.adjusting .adjust-btn { background: var(--wine); color: var(--cream); }
-.stage.adjusting .pin.on { pointer-events: auto; cursor: grab; touch-action: none; }
-.stage.adjusting .pin.on::after {
-  content: ""; position: absolute; inset: -3px;
-  border: 1px dashed var(--rose);
+
+/* the pin itself: a head with a highlight, and a short stem behind it */
+.pin::before {
+  content: ""; position: absolute; z-index: 3;
+  left: 50%; top: -7px; width: 13px; height: 13px;
+  transform: translateX(-50%) rotate(-8deg);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff 6%, var(--rose) 42%, var(--wine) 100%);
+  box-shadow: 0 2px 3px rgba(71,19,28,.45);
 }
-.stage.adjusting .pin.on.active::after { border: 2px solid var(--glow); }
-.stage.adjusting .pin.on.dragging { cursor: grabbing; transition: none; }
-.adjust-bar {
-  display: flex; align-items: center; gap: 10px;
-  margin-top: 12px; width: 100%; max-width: 440px;
-  font: 500 12px/1 var(--sans); color: var(--wine);
+.pin::after {
+  content: ""; position: absolute; z-index: 2;
+  left: 50%; top: 2px; width: 2px; height: 9px;
+  transform: translateX(-50%) rotate(-8deg);
+  background: var(--wine); opacity: .55;
 }
-.adjust-bar[hidden] { display: none; }
-.adjust-bar input[type="range"] { flex: 1; accent-color: var(--rose); }
-.adjust-bar .what { letter-spacing: .1em; text-transform: uppercase; min-width: 96px; }
 
 /* scan effect: a pink x-ray — the model stays visible as a silhouette */
 .stage.scan, .stage.spin { background: var(--wine); border-color: var(--wine); }
@@ -245,10 +240,13 @@ body {
 /* During the sweep the stage turns wine-dark. multiply against a dark backdrop
    would swallow the pieces, so they blend normally for the length of the
    animation and glow instead. */
-.stage.scan .pin.on, .stage.spin .pin.on { mix-blend-mode: normal; }
+.stage.scan .pin.on, .stage.spin .pin.on {
+  background: var(--blush); border-color: var(--glow);
+  box-shadow: 0 0 0 2px var(--glow), 0 0 22px 4px rgba(255,143,197,.6);
+}
+.stage.scan .pin.on .cap, .stage.spin .pin.on .cap { color: var(--wine); }
 .stage.scan .pin.on img, .stage.spin .pin.on img {
-  filter: grayscale(1) contrast(1.3) sepia(1) hue-rotate(300deg) saturate(2.2) brightness(1.05)
-          drop-shadow(0 0 10px rgba(255,143,197,.8));
+  filter: grayscale(1) contrast(1.3) sepia(1) hue-rotate(300deg) saturate(2.2) brightness(1.05);
 }
 .scanline {
   position: absolute; left: 0; right: 0; top: -4px; height: 4px;

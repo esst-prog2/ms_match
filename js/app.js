@@ -5,17 +5,7 @@
    ------------------------------------------------------------------ */
 
 const SLOTS = ['top', 'bottom', 'shoes', 'extra'];
-const STORE = { closet: 'msmatch.closet', saved: 'msmatch.saved', worn: 'msmatch.worn', model: 'msmatch.model', models: 'msmatch.models', history: 'msmatch.history', placement: 'msmatch.placement' };
-
-// Where each piece sits on the body, as a percentage of the stage box, so the
-// same numbers hold at any window size. `scale` multiplies PIN_BASE_W.
-const PIN_BASE_W = 34;                                  // % of stage width at scale 1
-const PLACEMENT_DEFAULTS = {
-  top:    { x: 50, y: 34, scale: 1.00 },                // over the torso
-  bottom: { x: 50, y: 62, scale: 1.00 },                // over the legs
-  shoes:  { x: 50, y: 88, scale: 0.55 },                // at the feet
-  extra:  { x: 78, y: 14, scale: 0.42 },                // beside the head
-};
+const STORE = { closet: 'msmatch.closet', saved: 'msmatch.saved', worn: 'msmatch.worn', model: 'msmatch.model', models: 'msmatch.models', history: 'msmatch.history' };
 
 // ---------- state --------------------------------------------------
 let closet  = load(STORE.closet) || DEMO_CLOSET.map(i => ({ ...i }));
@@ -29,9 +19,6 @@ let modelId = load(STORE.model)  || MODELS[0].id;   // white suit by default
 let current = { top: null, bottom: null, shoes: null, extra: null };
 let weather = { days: null, day: 0 };
 let filter  = 'all';
-let placement = load(STORE.placement) || {};       // model id -> slot -> {x,y,scale}
-let adjusting = false;                             // is the stage in adjust mode?
-let activeSlot = null;                             // which piece the adjust bar acts on
 
 function load(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } }
 // Returns whether the write got through, so callers can undo what they put in
@@ -39,17 +26,6 @@ function load(key) { try { return JSON.parse(localStorage.getItem(key)); } catch
 function save(key, v) {
   try { localStorage.setItem(key, JSON.stringify(v)); return true; }
   catch { setStatus('storage is full — remove some uploaded photos'); return false; }
-}
-// Stored placement for this model photo, falling back to the per-slot default.
-function placementFor(mId, slot) {
-  const d = PLACEMENT_DEFAULTS[slot];
-  const p = placement[mId] && placement[mId][slot];
-  return p ? { x: p.x, y: p.y, scale: p.scale } : { ...d };
-}
-function setPlacement(mId, slot, p) {
-  if (!placement[mId]) placement[mId] = {};
-  placement[mId][slot] = p;
-  save(STORE.placement, placement);
 }
 function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 function byId(id) { return closet.find(i => i.id === id) || null; }
@@ -68,9 +44,10 @@ function drawStage() {
     const item = byId(current[slot]);
     // a dress fills the bottom too, so that slot stays empty
     const show = item && !(slot === 'bottom' && wearsDress());
-    pin.innerHTML = show ? `<img src="${item.img}" alt="${item.name}">` : '';
+    pin.innerHTML = show
+      ? `<img src="${item.img}" alt="${item.name}" title="${item.name}"><span class="cap">${item.name}</span>`
+      : '';
     pin.classList.toggle('on', !!show);
-    applyPlacement(pin, slot);
   }
 
   const names = SLOTS.filter(s => !(s === 'bottom' && wearsDress())).map(s => byId(current[s])).filter(Boolean).map(i => i.name);
@@ -80,76 +57,6 @@ function drawStage() {
     `<img src="${m.img}" title="${m.name}" data-id="${m.id}" class="${m.id === modelId ? 'on' : ''}">`).join('')
     + `<label class="file">+ your photo<input type="file" accept="image/*" id="model-upload"></label>`;
   $('#model-upload').addEventListener('change', e => uploadModel(e.target.files[0]));
-}
-
-// ---------- placing the pieces on the body ---------------------------
-function applyPlacement(pin, slot) {
-  const p = placementFor(modelId, slot);
-  pin.style.setProperty('--px', p.x + '%');
-  pin.style.setProperty('--py', p.y + '%');
-  pin.style.setProperty('--pw', (PIN_BASE_W * p.scale) + '%');
-}
-
-// Drag a piece to move it. Pointer events cover mouse, trackpad, touch and pen
-// in one path, and the new centre is written back as a percentage of the stage
-// so it still means the same thing at another window size.
-function startDrag(e) {
-  if (!adjusting) return;
-  const pin = e.target.closest('.pin.on');
-  if (!pin) return;
-  const slot = pin.dataset.slot;
-  selectSlot(slot);
-  const rect = $('#stage').getBoundingClientRect();
-  pin.setPointerCapture(e.pointerId);
-  pin.classList.add('dragging');
-  e.preventDefault();
-
-  const move = ev => {
-    const x = clamp(((ev.clientX - rect.left) / rect.width) * 100, 0, 100);
-    const y = clamp(((ev.clientY - rect.top) / rect.height) * 100, 0, 100);
-    pin.style.setProperty('--px', x + '%');
-    pin.style.setProperty('--py', y + '%');
-  };
-  const up = () => {
-    pin.removeEventListener('pointermove', move);
-    pin.removeEventListener('pointerup', up);
-    pin.removeEventListener('pointercancel', up);
-    pin.classList.remove('dragging');
-    const cur = placementFor(modelId, slot);
-    setPlacement(modelId, slot, {
-      x: pct(pin.style.getPropertyValue('--px')),
-      y: pct(pin.style.getPropertyValue('--py')),
-      scale: cur.scale,
-    });
-    setStatus(`${slot} placed`);
-  };
-  pin.addEventListener('pointermove', move);
-  pin.addEventListener('pointerup', up);
-  pin.addEventListener('pointercancel', up);
-}
-
-const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-const pct = s => Math.round(parseFloat(s) * 10) / 10;
-
-function selectSlot(slot) {
-  activeSlot = slot;
-  document.querySelectorAll('.pin').forEach(p => p.classList.toggle('active', p.dataset.slot === slot));
-  const scale = $('#adjust-scale');
-  scale.disabled = false;
-  scale.value = placementFor(modelId, slot).scale;
-  $('#adjust-what').textContent = slot;
-}
-
-function setAdjusting(on) {
-  adjusting = on;
-  $('#stage').classList.toggle('adjusting', on);
-  $('#btn-adjust').textContent = on ? 'done' : 'adjust';
-  $('#adjust-bar').hidden = !on;
-  if (!on) {
-    activeSlot = null;
-    document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
-  }
-  setStatus(on ? 'drag a piece to place it on the body' : 'placement saved');
 }
 
 const SCAN_MS = 2600;
@@ -539,25 +446,6 @@ function init() {
   $('#pairings').addEventListener('click', e => {
     const img = e.target.closest('img[data-id]');
     if (img) toggle(byId(img.dataset.id));
-  });
-
-  // adjust mode: drag to move, slider to resize, both saved per model photo
-  $('#btn-adjust').addEventListener('click', () => setAdjusting(!adjusting));
-  $('#stage').addEventListener('pointerdown', startDrag);
-  const scaleInput = $('#adjust-scale');
-  const liveScale = () => {
-    if (!activeSlot) return null;
-    const pin = document.querySelector(`.pin[data-slot="${activeSlot}"]`);
-    pin.style.setProperty('--pw', (PIN_BASE_W * Number(scaleInput.value)) + '%');
-    return pin;
-  };
-  scaleInput.addEventListener('input', liveScale);        // follow the slider
-  scaleInput.addEventListener('change', () => {           // store once, on release
-    if (!activeSlot) return;
-    liveScale();
-    const cur = placementFor(modelId, activeSlot);
-    setPlacement(modelId, activeSlot, { x: cur.x, y: cur.y, scale: Number(scaleInput.value) });
-    setStatus(`${activeSlot} resized`);
   });
 
   $('#btn-match').addEventListener('click', matchMe);

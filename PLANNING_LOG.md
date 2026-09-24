@@ -12,3 +12,9 @@
 2026-09-24 - Dragging is an explicit "adjust" mode rather than always-on, so a stray drag cannot move a piece and the existing click-to-choose behaviour is untouched - decided by Claude
 2026-09-24 - No automatic detection of a photo's background: pieces will always be shot against white, so the blend can be applied unconditionally. 13 of the 21 demo photos have dark backgrounds and will look wrong until they are replaced by real photos - decided by Inez
 2026-09-24 - README sections 1 to 5 rewritten to describe pieces laid on the model; sections 1 and 2 were updated too, beyond the literal task text, because they still described the dropped AI render - decided by Claude
+2026-09-24 - Reversed the previous change after seeing it run: laying pieces over the body and blending their background away drained the colour out of light garments and read as a cheap overlay. The pieces go back to polaroids pinned around the model - decided by Inez
+2026-09-24 - Archived `outfit-on-model` and synced its two capabilities into openspec/specs, so the reversal could be written as a proper delta against an existing spec rather than an edit of work already pushed - decided by Claude
+2026-09-24 - Change `polaroid-pins` removes five requirements from outfit-display and adds two: pieces pinned around the model, and each piece framed as a named polaroid held by a pin - decided by Claude
+2026-09-24 - Adjust mode, dragging and the per-model `msmatch.placement` key are removed with it; a key left in a browser from the previous version is ignored rather than migrated - decided by Claude
+2026-09-24 - The polaroid frame is padding and the pin is a pseudo-element, so neither needs an image file and both scale with the card - decided by Claude
+2026-09-24 - README sections 1 to 5 rewritten again for the polaroid board; section 3 was updated too, beyond the literal task text, because it still described dragging pieces into place on the body - decided by Claude

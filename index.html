@@ -72,19 +72,13 @@
       <span class="note n4">match me →</span>
       <div class="stage" id="stage">
         <img class="model" id="model-img" src="" alt="model">
-        <div class="pin" data-slot="top"></div>
-        <div class="pin" data-slot="bottom"></div>
-        <div class="pin" data-slot="shoes"></div>
-        <div class="pin" data-slot="extra"></div>
+        <div class="pin pin-top"    data-slot="top"></div>
+        <div class="pin pin-bottom" data-slot="bottom"></div>
+        <div class="pin pin-shoes"  data-slot="shoes"></div>
+        <div class="pin pin-extra"  data-slot="extra"></div>
         <div class="scanline"></div>
         <div class="scan-label">matching…</div>
         <div class="match-label">match!</div>
-        <button class="adjust-btn" id="btn-adjust" type="button">adjust</button>
-      </div>
-      <div class="adjust-bar" id="adjust-bar" hidden>
-        <span class="what" id="adjust-what">drag a piece</span>
-        <input type="range" id="adjust-scale" min="0.3" max="2" step="0.05" value="1"
-               aria-label="size of the selected piece" disabled>
       </div>
       <div class="model-picker" id="model-picker"></div>
       <div class="caption" id="stage-caption">Choose pieces from the closet</div>
