@@ -1,0 +1,6 @@
+# editor and OS noise
+.DS_Store
+Thumbs.db
+
+# duplicate of .claude/skills, left by `openspec init --tools agents`
+.agents/

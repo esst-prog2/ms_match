@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ms. Match — Outfit of the day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="app">
+
+  <!-- ---------- hero ---------- -->
+  <header class="hero">
+    <!-- collage layer behind the name -->
+    <div class="collage" aria-hidden="true">
+      <img class="c1" src="assets/clothes/heels-red.jpg" alt="">
+      <img class="c2" src="assets/clothes/sunglasses.jpg" alt="">
+      <img class="c3" src="assets/clothes/jeans-blue.jpg" alt="">
+      <img class="c4" src="assets/clothes/beret-red.jpg" alt="">
+      <img class="c5" src="assets/clothes/bag-pink.jpg" alt="">
+      <span class="scribble s1">↓ start here</span>
+      <span class="scribble s2">✿</span>
+      <span class="scribble s3">♡</span>
+    </div>
+    <div class="portrait" id="hero-portrait"><img src="assets/models/model-white.jpg" alt=""></div>
+    <span class="note n1">hi, since you're new here…</span>
+    <span class="note n2">let me be your stylist ↘</span>
+    <span class="doodle d1">✦</span>
+    <span class="doodle d2">✧</span>
+    <span class="doodle d3">✦</span>
+    <span class="doodle d4">✧</span>
+    <h1 class="brand-big"><span class="ms">Ms.</span> <span class="match">Match</span></h1>
+    <div class="hero-row">
+      <span class="sticker">outfit of the day</span>
+      <span class="hero-date" id="today-label">—</span>
+      <span class="issue">No. 01</span>
+    </div>
+  </header>
+
+  <!-- ticker -->
+  <div class="ticker"><div class="ticker-track" id="ticker"></div></div>
+
+  <!-- ---------- main three columns ---------- -->
+  <section class="board">
+
+    <!-- weather -->
+    <aside class="col weather">
+      <h2 class="title"><small>forecast</small>Weather</h2>
+      <div class="day-toggle">
+        <button class="chip active" data-day="0">Today</button>
+        <button class="chip" data-day="1">Tomorrow</button>
+      </div>
+      <div class="w-icon" id="w-icon">·</div>
+      <div class="w-temp" id="w-temp">--°</div>
+      <div class="w-desc" id="w-desc">loading forecast…</div>
+      <div class="w-meta" id="w-meta"></div>
+      <div class="w-place" id="w-place">locating…</div>
+      <button class="btn primary wide" id="btn-suggest">Dress me for this weather</button>
+      <p class="hint" id="w-hint"></p>
+      <div class="pairings">
+        <span class="note">also works today ↓</span>
+        <div class="pairings-grid" id="pairings"></div>
+      </div>
+    </aside>
+
+    <!-- the model -->
+    <section class="col stage-col">
+      <span class="note n3">today's pick ↓</span>
+      <span class="note n4">match me →</span>
+      <div class="stage" id="stage">
+        <img class="model" id="model-img" src="" alt="model">
+        <div class="pin" data-slot="top"></div>
+        <div class="pin" data-slot="bottom"></div>
+        <div class="pin" data-slot="shoes"></div>
+        <div class="pin" data-slot="extra"></div>
+        <div class="scanline"></div>
+        <div class="scan-label">matching…</div>
+        <div class="match-label">match!</div>
+        <button class="adjust-btn" id="btn-adjust" type="button">adjust</button>
+      </div>
+      <div class="adjust-bar" id="adjust-bar" hidden>
+        <span class="what" id="adjust-what">drag a piece</span>
+        <input type="range" id="adjust-scale" min="0.3" max="2" step="0.05" value="1"
+               aria-label="size of the selected piece" disabled>
+      </div>
+      <div class="model-picker" id="model-picker"></div>
+      <div class="caption" id="stage-caption">Choose pieces from the closet</div>
+    </section>
+
+    <!-- the look -->
+    <aside class="col look">
+      <h2 class="title"><small>today</small>The look</h2>
+      <div class="match-zone">
+        <button class="btn big" id="btn-match">✦ Match me ✦</button>
+        <span class="note">one click, one outfit ↓</span>
+      </div>
+
+      <div class="slot" data-slot="top">
+        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">top</div></div>
+        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="bottom">
+        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">bottom</div></div>
+        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="shoes">
+        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">shoes</div></div>
+        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="extra">
+        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">extra</div></div>
+        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <div class="slot-name"></div>
+      </div>
+
+      <div class="actions" id="actions" hidden>
+        <span class="note">love it? ↓</span>
+        <button class="btn" id="btn-save">Save look</button>
+        <button class="btn primary" id="btn-wear">Wear it today</button>
+      </div>
+      <div class="style-note">
+        <span class="stamp" id="stamp">worn ✓</span>
+        <span class="note-title">stylist's note</span>
+        <p id="style-note">—</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ---------- statement band ---------- -->
+  <section class="band">
+    <img class="b1" src="assets/clothes/jacket-leather.jpg" alt="">
+    <img class="b2" src="assets/clothes/dress-green.jpg" alt="">
+    <img class="b3" src="assets/clothes/sneakers-white.jpg" alt="">
+    <img class="b4" src="assets/models/model-burgundy.jpg" alt="">
+    <h2 class="band-text"><span>Wear it.</span> <span class="outline">Save it.</span> <span>Repeat.</span></h2>
+    <span class="note n5">full closet, nothing to wear? there's an app for that.</span>
+  </section>
+
+  <!-- ---------- saved looks ---------- -->
+  <section class="strip">
+    <div class="strip-head">
+      <h2 class="title"><small>archive</small>Saved looks</h2>
+      <button class="btn" id="btn-cal">✎ Outfit calendar</button>
+      <button class="link" id="btn-clear-saved">clear all</button>
+    </div>
+    <div class="saved-list" id="saved-list"></div>
+  </section>
+
+  <!-- ---------- closet ---------- -->
+  <section class="closet">
+    <div class="strip-head">
+      <h2 class="title"><small>everything you own</small>Closet</h2>
+      <div class="filters" id="filters">
+        <button class="chip active" data-cat="all">All</button>
+        <button class="chip" data-cat="top">Tops</button>
+        <button class="chip" data-cat="bottom">Bottoms</button>
+        <button class="chip" data-cat="shoes">Shoes</button>
+        <button class="chip" data-cat="extra">Extras</button>
+      </div>
+      <button class="link" id="btn-reset-demo">reset demo closet</button>
+    </div>
+
+    <div class="closet-grid" id="closet-grid"></div>
+
+    <form class="add-form" id="add-form">
+      <span class="form-title">Add a piece</span>
+      <input name="name" placeholder="name" required>
+      <select name="cat">
+        <option value="top">top</option>
+        <option value="bottom">bottom</option>
+        <option value="shoes">shoes</option>
+        <option value="extra">extra</option>
+      </select>
+      <select name="warmth">
+        <option value="1">light</option>
+        <option value="2" selected>mid</option>
+        <option value="3">warm</option>
+      </select>
+      <label class="check"><input name="rain" type="checkbox"> rain ok</label>
+      <label class="check"><input name="full" type="checkbox"> dress (covers bottom)</label>
+      <label class="file">photo <input name="photo" type="file" accept="image/*" required></label>
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+  </section>
+
+  <!-- ---------- outfit calendar (modal) ---------- -->
+  <div class="modal" id="cal" hidden>
+    <div class="modal-card">
+      <button class="modal-close" id="cal-close" aria-label="close">×</button>
+      <div class="cal-head">
+        <button class="arrow" id="cal-prev">‹</button>
+        <h2 class="title" id="cal-title">—</h2>
+        <button class="arrow" id="cal-next">›</button>
+      </div>
+      <div class="cal-week"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <p class="note cal-note">every day you press "wear it" lands here ♡</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span id="status">ready</span>
+    <span>photos: Unsplash · weather: Open-Meteo · everything stays in your browser</span>
+  </footer>
+</main>
+
+<script src="js/closet.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

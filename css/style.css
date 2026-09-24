@@ -1,0 +1,575 @@
+/* ------------------------------------------------------------------
+   Ms. Match — paper, pink and a little burgundy
+   Palette: cherry cola #47131C · rosewood #6B0B0C · coffee bean #2D120D
+            lemon soda #FFF8CA · cotton candy #FFD7E7 · botticelli #CDE3E8
+   Added:   paper #F4ECE1 (the page itself) · bubblegum #F07EB2 (display type)
+   ------------------------------------------------------------------ */
+
+:root {
+  --wine:    #47131C;
+  --rose:    #6B0B0C;
+  --coffee:  #2D120D;
+  --cream:   #FFF8CA;
+  --blush:   #FFD7E7;
+  --sky:     #CDE3E8;
+  --paper:   #F4ECE1;
+  --paper-2: #EDE2D3;
+  --pink:    #F07EB2;
+  --glow:    #FF8FC5;        /* the scanner light */
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+  --hand:  'Caveat', 'Segoe Print', cursive;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--wine);
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(71,19,28,.10) 1.3px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+.app { max-width: 1240px; margin: 0 auto; padding: 0 26px 40px; }
+
+/* ---------- shared pieces --------------------------------------- */
+.title {
+  margin: 0 0 14px;
+  font: italic 600 34px/1 var(--serif);
+  color: var(--wine);
+}
+.title small {
+  display: block; margin-bottom: 6px;
+  font: 500 11px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--rose);
+}
+.link {
+  font: inherit; font-size: 12px; letter-spacing: .04em;
+  background: none; border: 0; cursor: pointer;
+  color: var(--rose); text-decoration: underline;
+}
+.note {                                   /* handwritten side notes */
+  font: 500 22px/1.1 var(--hand);
+  color: var(--wine);
+  pointer-events: none;
+}
+
+/* the ONE building block: a white paper card with a wine line and a pink shadow */
+.stage, .slot-card, .closet-item, .saved-item, .model-picker img {
+  background: #fff;
+  color: var(--wine);
+  border: 1px solid var(--wine);
+  box-shadow: 5px 5px 0 var(--blush);
+}
+
+/* pink washi tape — the motif that ties the cards together */
+.saved-item::before, .w-icon::after {
+  content: ""; position: absolute; z-index: 2;
+  width: 44px; height: 13px; left: 50%; top: -7px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(240,126,178,.75);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.btn {
+  font: 600 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
+  padding: 12px 16px; cursor: pointer;
+  color: var(--wine); background: #fff;
+  border: 1px solid var(--wine);
+  box-shadow: 4px 4px 0 var(--blush);
+  transition: transform .1s, box-shadow .1s, background .15s;
+}
+.btn:hover { background: var(--cream); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--blush); }
+.btn.primary { background: var(--wine); color: var(--cream); box-shadow: 4px 4px 0 var(--pink); }
+.btn.primary:hover { background: var(--rose); }
+.btn.wide { width: 100%; }
+
+.chip {
+  font: 500 12px/1 var(--sans); letter-spacing: .06em;
+  padding: 8px 12px; cursor: pointer;
+  color: var(--wine); background: transparent;
+  border: 1px solid var(--wine); border-radius: 999px;
+}
+.chip.active { background: var(--wine); color: var(--cream); box-shadow: 3px 3px 0 var(--pink); }
+.day-toggle, .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ---------- hero ------------------------------------------------ */
+.hero {
+  position: relative;
+  padding: 44px 0 10px;
+  margin-bottom: 0;
+  z-index: 2;
+  min-height: 330px;
+  border-top: 8px solid transparent;
+  border-image: repeating-linear-gradient(90deg, var(--wine) 0 10px, transparent 10px 20px) 8;
+}
+.brand-big {
+  margin: 0;
+  font: italic 600 clamp(84px, 13.5vw, 176px)/.9 var(--serif);
+  letter-spacing: -.02em;
+  color: var(--pink);
+  text-shadow: 6px 6px 0 var(--wine);
+  pointer-events: none;
+}
+.brand-big .ms { color: var(--wine); text-shadow: 6px 6px 0 var(--blush); }
+.hero-row {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+}
+.hero-row .issue { font: italic 600 22px/1 var(--serif); letter-spacing: 0; text-transform: none; color: var(--rose); }
+.sticker {
+  display: inline-block; padding: 8px 14px;
+  background: var(--wine); color: var(--cream);
+  font: 600 12px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase;
+  transform: rotate(-3deg);
+  box-shadow: 3px 3px 0 var(--pink);
+}
+.doodle { position: absolute; color: var(--pink); pointer-events: none; font-size: 28px; }
+.doodle.d1 { left: 47%; top: 26px; font-size: 22px; }
+.doodle.d2 { left: 64%; top: 70px; font-size: 34px; }
+.doodle.d3 { right: 9%;  top: 40px; font-size: 40px; }
+.doodle.d4 { right: 2%;  top: 118px; font-size: 20px; }
+.hero .note.n1 { position: absolute; left: 2px; top: 12px; }
+.hero .note.n2 { position: absolute; right: 12%; top: 96px; transform: rotate(-4deg); }
+@media (max-width: 900px) {
+  .hero { margin-bottom: 0; }
+  .brand-big { text-shadow: 3px 3px 0 var(--wine); }
+  .hero .note.n2 { display: none; }
+}
+
+/* ---------- board ------------------------------------------------ */
+.board {
+  display: grid;
+  grid-template-columns: 220px 1fr 300px;
+  gap: 30px;
+  align-items: start;
+  padding-top: 40px;
+}
+@media (max-width: 900px) { .board { grid-template-columns: 1fr; } }
+.col { min-width: 0; }
+
+/* weather */
+.weather { padding: 0 4px; position: relative; }
+.weather .chip.active { background: var(--pink); color: #fff; border-color: var(--wine); }
+.w-icon {
+  position: relative;
+  width: 74px; height: 74px; margin: 22px 0 10px;
+  display: grid; place-items: center;
+  font-size: 40px; line-height: 1;
+  background: var(--sky); color: var(--wine);
+  border: 1px solid var(--wine); border-radius: 50%;
+  box-shadow: 4px 4px 0 var(--blush);
+  transform: rotate(-6deg);
+}
+.w-temp { font: 500 84px/1 var(--serif); color: var(--wine); text-shadow: 4px 4px 0 var(--blush); }
+.w-desc { font: italic 500 22px/1.2 var(--serif); margin-top: 6px; color: var(--rose); }
+.w-meta { font-size: 12px; opacity: .8; margin-top: 8px; white-space: pre-line; line-height: 1.6; }
+.w-place { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; margin: 14px 0 16px; padding-top: 12px; border-top: 2px dotted rgba(71,19,28,.4); }
+.weather .btn.primary { transform: rotate(-1.5deg); }
+.hint { font: 500 21px/1.15 var(--hand); margin: 16px 0 0; color: var(--rose); }
+
+/* stage */
+.stage-col { display: flex; flex-direction: column; align-items: center; padding-top: 46px; position: relative; }
+.stage {
+  position: relative;
+  width: 100%; max-width: 440px;
+  aspect-ratio: 2 / 3;
+  padding: 10px;
+  overflow: hidden;
+}
+.stage .model {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.95);
+  transition: filter .25s;
+}
+.stage-col .note.n3 { position: absolute; left: -6px; top: 10px; transform: rotate(-6deg); }
+.stage-col .note.n4 { position: absolute; right: -4px; bottom: 76px; transform: rotate(4deg); }
+
+/* A piece sits on the body. --px/--py are the centre as a percentage of the
+   stage, --pw the width; app.js writes all three from the stored placement. */
+/* multiply drops the plain light background of a self-shot piece into the photo
+   behind it, so nothing has to be cut out by hand. It sits on .pin and not on
+   the image: .pin is transformed, which makes it a stacking context, and a
+   blend applied inside that context would blend against the pin itself -
+   computing to "multiply" while changing nothing on screen. */
+.pin {
+  position: absolute;
+  left: var(--px, 50%); top: var(--py, 50%);
+  width: var(--pw, 34%); aspect-ratio: 3 / 4;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.85) rotate(var(--tilt, 0deg));
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+/* contain keeps the whole garment in frame; the blend hides the empty edges */
+.pin img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.pin.on { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--tilt, 0deg)); }
+
+/* adjust mode: the pieces become draggable, everything else stays put */
+.adjust-btn {
+  position: absolute; right: 8px; top: 8px; z-index: 3;
+  font: 500 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
+  padding: 7px 11px; cursor: pointer;
+  background: #fff; color: var(--wine);
+  border: 1px solid var(--wine); box-shadow: 3px 3px 0 var(--blush);
+}
+.stage.adjusting .adjust-btn { background: var(--wine); color: var(--cream); }
+.stage.adjusting .pin.on { pointer-events: auto; cursor: grab; touch-action: none; }
+.stage.adjusting .pin.on::after {
+  content: ""; position: absolute; inset: -3px;
+  border: 1px dashed var(--rose);
+}
+.stage.adjusting .pin.on.active::after { border: 2px solid var(--glow); }
+.stage.adjusting .pin.on.dragging { cursor: grabbing; transition: none; }
+.adjust-bar {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 12px; width: 100%; max-width: 440px;
+  font: 500 12px/1 var(--sans); color: var(--wine);
+}
+.adjust-bar[hidden] { display: none; }
+.adjust-bar input[type="range"] { flex: 1; accent-color: var(--rose); }
+.adjust-bar .what { letter-spacing: .1em; text-transform: uppercase; min-width: 96px; }
+
+/* scan effect: a pink x-ray — the model stays visible as a silhouette */
+.stage.scan, .stage.spin { background: var(--wine); border-color: var(--wine); }
+.stage.scan .model, .stage.spin .model {
+  filter: grayscale(1) contrast(1.35) brightness(.75) sepia(1) hue-rotate(295deg) saturate(2.4);
+}
+/* During the sweep the stage turns wine-dark. multiply against a dark backdrop
+   would swallow the pieces, so they blend normally for the length of the
+   animation and glow instead. */
+.stage.scan .pin.on, .stage.spin .pin.on { mix-blend-mode: normal; }
+.stage.scan .pin.on img, .stage.spin .pin.on img {
+  filter: grayscale(1) contrast(1.3) sepia(1) hue-rotate(300deg) saturate(2.2) brightness(1.05)
+          drop-shadow(0 0 10px rgba(255,143,197,.8));
+}
+.scanline {
+  position: absolute; left: 0; right: 0; top: -4px; height: 4px;
+  background: var(--glow); box-shadow: 0 0 18px 6px rgba(255,143,197,.75);
+  opacity: 0; pointer-events: none;
+}
+.stage.scan .scanline { animation: sweep 2.4s ease-in-out 1; }
+.stage.spin .scanline { animation: sweep 1.1s linear infinite; }
+@keyframes sweep { from { top: -4px; opacity: 1; } to { top: 100%; opacity: 1; } }
+.scan-label {
+  position: absolute; left: 0; right: 0; bottom: 14px; text-align: center;
+  font: 500 12px/1 var(--sans); letter-spacing: .5em; text-transform: uppercase;
+  color: var(--glow); text-shadow: 0 0 10px var(--glow);
+  opacity: 0; pointer-events: none;
+}
+.stage.scan .scan-label, .stage.spin .scan-label { animation: blink .5s steps(2) infinite; }
+@keyframes blink { from { opacity: 1; } to { opacity: .3; } }
+
+/* the "match!" burst after a shuffle */
+.match-label {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: 600 96px/1 var(--hand); color: var(--cream);
+  text-shadow: 5px 5px 0 var(--pink), 0 0 30px rgba(255,143,197,.8);
+  transform: rotate(-8deg) scale(.4); opacity: 0; pointer-events: none;
+}
+.stage.matched .match-label { animation: pop .9s cubic-bezier(.2,1.4,.4,1) 1 forwards; }
+@keyframes pop {
+  0%   { opacity: 0; transform: rotate(-8deg) scale(.4); }
+  35%  { opacity: 1; transform: rotate(-8deg) scale(1.15); }
+  100% { opacity: 1; transform: rotate(-8deg) scale(1); }
+}
+
+/* the one big button: Match me */
+.match-zone { display: flex; flex-direction: column; gap: 6px; margin: 0 0 18px; }
+.match-zone .note { color: var(--rose); align-self: flex-end; }
+.btn.big {
+  padding: 16px 28px; font-size: 14px; letter-spacing: .2em;
+  background: var(--pink); color: var(--wine); border-color: var(--wine);
+  box-shadow: 6px 6px 0 var(--wine);
+  transform: rotate(-1.5deg);
+}
+.btn.big:hover { background: #ff9ccb; }
+.btn.big:active { transform: rotate(-1.5deg) translate(4px, 4px); box-shadow: 2px 2px 0 var(--wine); }
+.stage.spin .pin { transition: none; }
+
+.model-picker { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+.model-picker img {
+  width: 46px; height: 60px; object-fit: cover; cursor: pointer;
+  padding: 3px; opacity: .75; box-shadow: 3px 3px 0 var(--blush);
+}
+.model-picker img.on { opacity: 1; transform: rotate(-3deg); box-shadow: 3px 3px 0 var(--pink); }
+.model-picker .file { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; color: var(--rose); }
+.model-picker input { display: none; }
+.caption { margin-top: 12px; font: italic 500 18px/1.3 var(--serif); text-align: center; color: var(--rose); max-width: 440px; }
+
+/* the look */
+.slot {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  grid-template-areas: "l card r" ". name .";
+  align-items: center;
+  margin-bottom: 12px;
+}
+.slot-card { grid-area: card; position: relative; height: 104px; padding: 5px; }
+.slot-card img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.slot-card.on img { display: block; }
+.slot-card:not(.on) { background: transparent; border: 1px dashed var(--wine); box-shadow: none; }
+.slot-empty {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: italic 500 16px var(--serif); color: var(--wine); opacity: .5;
+}
+.slot-card.on .slot-empty { display: none; }
+.slot .arrow { font: 500 24px/1 var(--serif); color: var(--wine); background: none; border: 0; cursor: pointer; opacity: .7; }
+.slot .arrow:hover { opacity: 1; }
+.slot-name { grid-area: name; text-align: center; font: italic 500 15px var(--serif); color: var(--rose); min-height: 16px; margin-top: 6px; }
+.slot.dim { opacity: .35; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; animation: rise .4s ease-out; }
+.actions .note { grid-column: 1 / -1; color: var(--rose); }
+.actions .btn { padding: 12px 6px; font-size: 11px; }
+.actions.pulse .btn.primary { animation: pulse 1.2s ease-in-out 3; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pulse { 0%, 100% { transform: none; } 50% { transform: scale(1.06) rotate(-1deg); } }
+
+/* ---------- saved looks: the burgundy band ------------------------ */
+.strip {
+  margin: 40px -26px 0;
+  padding: 26px 26px 30px;
+  background-color: var(--wine);
+  background-image: radial-gradient(rgba(255,215,231,.16) 1.4px, transparent 1.5px);
+  background-size: 22px 22px;
+  color: var(--cream);
+}
+.strip .title { color: var(--cream); }
+.strip .title small { color: var(--pink); }
+.strip .link { color: var(--blush); }
+.strip-head { display: flex; align-items: flex-end; gap: 18px; margin-bottom: 14px; }
+.strip-head .title { margin: 0; }
+.strip-head .filters { margin-bottom: 4px; }
+.strip-head .link { margin-left: auto; }
+.saved-list { display: flex; gap: 14px; flex-wrap: wrap; }
+.saved-list .empty { font: 500 22px var(--hand); color: var(--blush); }
+.saved-item {
+  position: relative;
+  display: flex; align-items: flex-end; gap: 10px; cursor: pointer;
+  padding: 10px 10px 8px; margin-top: 8px;
+  box-shadow: 5px 5px 0 var(--pink);
+}
+.saved-item:hover { background: var(--cream); }
+.saved-item .thumbs { display: flex; gap: 3px; }
+.saved-item .thumbs img { width: 34px; height: 44px; object-fit: cover; }
+.saved-item .meta { font-size: 11px; opacity: .8; line-height: 1.4; }
+.saved-item.worn { background: var(--blush); }
+.saved-item.worn .meta::after { content: "worn today"; display: block; color: var(--rose); font-style: italic; }
+.saved-item .del { background: none; border: 0; color: var(--wine); opacity: .5; cursor: pointer; font-size: 14px; }
+.saved-item .wear {
+  font: 600 10px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
+  padding: 7px 9px; cursor: pointer; background: var(--wine); color: var(--cream); border: 0;
+  box-shadow: 3px 3px 0 var(--pink);
+}
+.saved-item .wear:hover { background: var(--rose); }
+.strip-head .btn { margin-bottom: 4px; padding: 10px 14px; font-size: 11px; }
+
+/* ---------- closet: the cotton-candy block --------------------------- */
+.closet {
+  margin: 0 -26px 0;
+  padding: 30px 26px 34px;
+  background-color: var(--blush);
+  background-image: radial-gradient(rgba(71,19,28,.12) 1.3px, transparent 1.4px);
+  background-size: 22px 22px;
+  color: var(--wine);
+}
+.closet .chip.active { background: var(--pink); color: #fff; }
+.closet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 14px;
+}
+.closet-item {
+  position: relative; cursor: pointer;
+  padding: 5px 5px 0;
+  transition: transform .15s, box-shadow .15s;
+}
+.closet-item:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--pink); }
+.closet-item.on { background: var(--cream); transform: rotate(-2deg); box-shadow: 5px 5px 0 var(--pink); }
+.closet-item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+.closet-item .label { padding: 7px 4px 8px; font-size: 11.5px; line-height: 1.3; }
+.closet-item .label small { display: block; opacity: .8; letter-spacing: .08em; text-transform: uppercase; font-size: 9.5px; margin-top: 2px; }
+.closet-item .label small::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; background: var(--wine); }
+.closet-item[data-cat="top"]    .label small::before { background: var(--pink); }
+.closet-item[data-cat="bottom"] .label small::before { background: var(--sky); border: 1px solid var(--wine); width: 5px; height: 5px; }
+.closet-item[data-cat="shoes"]  .label small::before { background: var(--coffee); }
+.closet-item[data-cat="extra"]  .label small::before { background: var(--rose); }
+.closet-item .del {
+  position: absolute; top: 8px; right: 8px; width: 20px; height: 20px;
+  border: 0; border-radius: 50%; background: var(--wine); color: #fff; cursor: pointer; font-size: 12px; line-height: 20px; padding: 0;
+  opacity: 0; transition: opacity .15s;
+}
+.closet-item:hover .del { opacity: 1; }
+.closet-item.hidden { display: none; }
+
+.add-form {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  margin-top: 22px; padding: 14px; border: 1px dashed var(--wine); background: rgba(255,255,255,.45);
+}
+.form-title { font: 500 24px/1 var(--hand); color: var(--wine); margin-right: 8px; }
+.add-form input:not([type]), .add-form select {
+  font: inherit; color: var(--wine); background: #fff;
+  border: 1px solid var(--wine); padding: 8px 10px;
+}
+.add-form input:not([type]) { min-width: 150px; }
+.add-form .check { font-size: 12px; display: flex; gap: 4px; align-items: center; }
+.add-form .file { font-size: 12px; }
+.add-form .btn { padding: 10px 14px; }
+
+.foot {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  margin: 0 -26px; padding: 14px 26px 18px;
+  background: var(--wine); color: var(--blush);
+  font-size: 11px; letter-spacing: .06em;
+}
+
+
+/* ================= density: collage, ticker, stats, band ================= */
+
+/* hero collage behind the name */
+.collage { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.collage img {
+  position: absolute; width: 120px; aspect-ratio: 3 / 4; object-fit: cover;
+  padding: 4px; background: #fff; border: 1px solid var(--wine); box-shadow: 4px 4px 0 var(--blush);
+}
+.collage .c1 { left: 22%; top: -14px; transform: rotate(-8deg); width: 104px; }
+.collage .c2 { left: 41%; top: 158px; transform: rotate(6deg); width: 104px; aspect-ratio: 1; }
+.collage .c3 { left: 56%; top: 8px;   transform: rotate(4deg); }
+.collage .c4 { right: 20%; top: 120px; transform: rotate(-5deg); width: 100px; }
+.collage .c5 { right: 34%; top: 190px; transform: rotate(9deg); width: 96px; aspect-ratio: 4/3; }
+.scribble { position: absolute; font: 500 24px var(--hand); color: var(--rose); }
+.scribble.s1 { left: 18%; top: 176px; transform: rotate(-8deg); }
+.scribble.s2 { left: 74%; top: 6px; font-size: 34px; color: var(--pink); }
+.scribble.s3 { right: 4%; top: 200px; font-size: 30px; color: var(--pink); }
+
+/* the portrait sticker overlapping the name */
+.portrait {
+  position: absolute; right: 2%; top: 22px; z-index: 3;
+  width: 200px; height: 200px; border-radius: 50%; overflow: hidden;
+  border: 6px solid #fff; box-shadow: 0 0 0 1px var(--wine), 8px 8px 0 var(--pink);
+  transform: rotate(4deg);
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+.hero .note.n2 { right: auto; left: 58%; top: 246px; }
+.brand-big { position: relative; z-index: 2; }
+@media (max-width: 900px) { .portrait { width: 120px; height: 120px; top: 10px; } .collage img { width: 80px; } }
+
+/* ticker */
+.ticker {
+  margin: 0 -26px; padding: 8px 0; overflow: hidden; white-space: nowrap;
+  background: var(--wine); color: var(--cream);
+  font: 600 12px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase;
+}
+.ticker-track { display: inline-block; animation: ticker 40s linear infinite; }
+.ticker-track span { display: inline-block; padding: 0 22px; }
+.ticker-track span::after { content: "✦"; color: var(--pink); margin-left: 44px; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* "also works today" mini board in the weather column */
+.pairings { margin-top: 26px; padding-top: 16px; border-top: 2px dotted rgba(71,19,28,.4); }
+.pairings .note { display: block; margin-bottom: 8px; }
+.pairings-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.pairings-grid img {
+  width: 58px; height: 74px; object-fit: cover; cursor: pointer;
+  padding: 3px; background: #fff; border: 1px solid var(--wine); box-shadow: 3px 3px 0 var(--blush);
+}
+.pairings-grid img:nth-child(odd) { transform: rotate(-4deg); }
+.pairings-grid img:nth-child(even) { transform: rotate(3deg); }
+.pairings-grid img:hover { transform: rotate(0) scale(1.06); }
+
+/* stylist's note: a torn lemon-soda paper with a stamp */
+.style-note {
+  position: relative; margin-top: 22px; padding: 16px 16px 14px;
+  background: var(--cream);
+  border: 1px solid var(--wine);
+  box-shadow: 5px 5px 0 var(--blush);
+  transform: rotate(-1deg);
+}
+.style-note .note-title { display: block; font: 500 12px var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--rose); margin-bottom: 6px; }
+.style-note p { margin: 0; font: 500 22px/1.15 var(--hand); color: var(--wine); }
+.stamp {
+  position: absolute; right: 10px; top: -14px;
+  padding: 6px 10px; border: 2px solid var(--rose); color: var(--rose);
+  font: 700 12px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase;
+  transform: rotate(8deg); background: rgba(255,255,255,.7);
+  opacity: 0; transition: opacity .2s;
+}
+.stamp.on { opacity: 1; }
+
+/* statement band */
+.band {
+  position: relative; overflow: hidden;
+  margin: 40px -26px 0; padding: 54px 26px 60px;
+  background-color: var(--rose);
+  background-image: repeating-linear-gradient(90deg, rgba(255,215,231,.08) 0 10px, transparent 10px 20px);
+  color: var(--cream);
+  min-height: 300px;
+}
+.band img {
+  position: absolute; object-fit: cover;
+  padding: 5px; background: #fff; border: 1px solid var(--wine); box-shadow: 6px 6px 0 var(--pink);
+}
+.band .b1 { left: 6%;  top: 24px;  width: 150px; height: 190px; transform: rotate(-7deg); }
+.band .b2 { left: 22%; bottom: -30px; width: 130px; height: 170px; transform: rotate(5deg); }
+.band .b3 { right: 3%; top: 18px;  width: 150px; height: 110px; transform: rotate(6deg); }
+.band .b4 { right: 24%; bottom: -40px; width: 130px; height: 190px; transform: rotate(-4deg); }
+.band-text {
+  position: relative; z-index: 2; margin: 0; text-align: center;
+  font: italic 600 clamp(56px, 9vw, 120px)/1 var(--serif);
+  color: var(--blush);
+  text-shadow: 5px 5px 0 var(--wine);
+}
+.band-text .outline {
+  color: transparent; -webkit-text-stroke: 2px var(--cream); text-shadow: none;
+}
+.band .note.n5 {
+  position: relative; z-index: 2; display: table; margin: 22px auto 0; padding: 6px 18px;
+  color: var(--wine); background: var(--cream); font-size: 26px;
+  border: 1px solid var(--wine); box-shadow: 4px 4px 0 var(--pink); transform: rotate(-1.5deg);
+}
+.strip { margin-top: 0; }
+
+
+/* ================= outfit calendar ================= */
+.modal[hidden] { display: none; }
+.modal {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(71,19,28,.55);
+  display: grid; place-items: center; padding: 20px;
+}
+.modal-card {
+  position: relative; width: min(760px, 100%); max-height: 92vh; overflow: auto;
+  background: var(--paper); color: var(--wine);
+  background-image: radial-gradient(rgba(71,19,28,.10) 1.3px, transparent 1.4px); background-size: 22px 22px;
+  border: 1px solid var(--wine); box-shadow: 10px 10px 0 var(--pink);
+  padding: 22px 24px 18px;
+}
+.modal-close {
+  position: absolute; top: 10px; right: 12px; width: 32px; height: 32px;
+  border: 1px solid var(--wine); background: #fff; color: var(--wine); font-size: 18px; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--blush);
+}
+.cal-head { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 10px; }
+.cal-head .title { margin: 0; text-align: center; min-width: 220px; }
+.cal-head .arrow { font: 500 30px/1 var(--serif); color: var(--wine); background: none; border: 0; cursor: pointer; }
+.cal-week { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--rose); margin-bottom: 4px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-day {
+  min-height: 78px; padding: 5px 6px; background: rgba(255,255,255,.7);
+  border: 1px solid rgba(71,19,28,.35); position: relative;
+}
+.cal-day.empty { background: transparent; border-color: transparent; }
+.cal-day .d { font: 600 12px var(--serif); color: var(--wine); }
+.cal-day.today .d { background: var(--pink); color: #fff; padding: 1px 6px; border-radius: 999px; }
+.cal-day.worn { background: #fff; border-color: var(--wine); box-shadow: 3px 3px 0 var(--blush); cursor: pointer; }
+.cal-day.worn:hover { box-shadow: 3px 3px 0 var(--pink); }
+.cal-day .thumbs { display: flex; gap: 2px; margin-top: 5px; flex-wrap: wrap; }
+.cal-day .thumbs img { width: 22px; height: 28px; object-fit: cover; border: 1px solid var(--wine); }
+.cal-note { text-align: center; margin: 14px 0 0; color: var(--rose); }
