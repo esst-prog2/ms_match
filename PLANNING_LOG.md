@@ -1,0 +1,14 @@
+2026-09-22 - Use OpenSpec (@fission-ai/openspec) v1.13.0 as the spec-driven workflow tool for this project - decided by Inez
+2026-09-22 - Ran `openspec init` with `--tools agents` (shared .agents skills, no Claude-specific commands) so instructions stay centralized in AGENTS.md - decided by Claude
+2026-09-23 - Re-ran `openspec init --tools claude` so the 6 OpenSpec skills are discoverable by Claude Code in .claude/skills/ (the earlier --tools agents run left them only in .agents/, where Claude Code does not look) - decided by Inez
+2026-09-24 - Dropped the AI try-on render from the MVP: the pieces are photographed by hand and placed on the model photo instead, so no photo leaves the browser and no image API is paid for - decided by Inez
+2026-09-24 - Pieces are placed anatomically on the body rather than arranged in the corners of the stage, because the pinned view is now the product and not a fallback - decided by Inez
+2026-09-24 - Placement is adjustable by dragging and stored per model photo, with fixed per-slot defaults, because a self-shot photo does not match the framing of the built-in studio models - decided by Inez
+2026-09-24 - The plain background of a clothing photo is removed with CSS `mix-blend-mode: multiply` rather than by cutting pieces out, since it costs nothing and needs no tuning - decided by Inez
+2026-09-24 - Storage stays on localStorage for now; the fix is that a failed write is reported and rolled back instead of losing a piece silently. IndexedDB moves to the later-levels list - decided by Inez
+2026-09-24 - Change `outfit-on-model` created in OpenSpec with proposal, two capability specs (outfit-display, closet-storage), design and tasks; `openspec validate --strict` passes - decided by Claude
+2026-09-24 - `mix-blend-mode: multiply` is set on the `.pin` element, not on the image inside it: the pin is transformed, which makes it a stacking context, so a blend applied inside computes as "multiply" while changing no pixel - decided by Claude
+2026-09-24 - Placement is stored as a percentage of the stage rather than in pixels, so a piece keeps its position when the window is resized or the app is opened on another screen - decided by Claude
+2026-09-24 - Dragging is an explicit "adjust" mode rather than always-on, so a stray drag cannot move a piece and the existing click-to-choose behaviour is untouched - decided by Claude
+2026-09-24 - No automatic detection of a photo's background: pieces will always be shot against white, so the blend can be applied unconditionally. 13 of the 21 demo photos have dark backgrounds and will look wrong until they are replaced by real photos - decided by Inez
+2026-09-24 - README sections 1 to 5 rewritten to describe pieces laid on the model; sections 1 and 2 were updated too, beyond the literal task text, because they still described the dropped AI render - decided by Claude
