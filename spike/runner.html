@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spike Runner</title>
+</head>
+<body>
+  <h1>Running Spike...</h1>
+  <div id="status" style="font-weight: bold; font-size: 20px; color: blue;">RUNNING</div>
+  <pre id="log" style="background: #f4f4f4; padding: 10px; border: 1px solid #ccc;"></pre>
+
+  <script id="adds-data" type="application/json"></script>
+  <script id="capacity-data" type="application/json"></script>
+
+  <script src="/js/closet.js"></script>
+  <script>
+    function log(msg) {
+      console.log(msg);
+      document.getElementById('log').textContent += msg + '\n';
+    }
+
+    const items = [
+      { name: "striped crop top", cat: "top", warmth: 1, rain: false, full: false, file: "IMG_7124.jpeg", stopwatch: 19 },
+      { name: "floral skort", cat: "bottom", warmth: 1, rain: false, full: false, file: "IMG_7125.jpeg", stopwatch: 21 },
+      { name: "crochet floral tank", cat: "top", warmth: 1, rain: false, full: false, file: "IMG_7128.jpeg", stopwatch: 24 },
+      { name: "green plaid skirt", cat: "bottom", warmth: 2, rain: false, full: false, file: "IMG_7129.jpeg", stopwatch: 18 },
+      { name: "brown corduroy blazer", cat: "extra", warmth: 2, rain: false, full: false, file: "IMG_7131.jpeg", stopwatch: 22 },
+      { name: "black lace camisole", cat: "top", warmth: 1, rain: false, full: false, file: "IMG_7132.jpeg", stopwatch: 17 },
+      { name: "sequin slip tunic", cat: "top", warmth: 2, rain: false, full: false, file: "IMG_7133.jpeg", stopwatch: 20 },
+      { name: "blue floral mesh top", cat: "top", warmth: 1, rain: false, full: false, file: "IMG_7134.jpeg", stopwatch: 21 },
+      { name: "blue bootcut jeans", cat: "bottom", warmth: 2, rain: true, full: false, file: "IMG_7135.jpeg", stopwatch: 23 },
+      { name: "light wide leg jeans", cat: "bottom", warmth: 2, rain: true, full: false, file: "IMG_7136.jpeg", stopwatch: 20 },
+    ];
+
+    function shrinkImage(imgUrl, max = 520) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement('canvas');
+          c.width = Math.round(img.width * k);
+          c.height = Math.round(img.height * k);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = reject;
+        img.src = imgUrl;
+      });
+    }
+
+    async function run() {
+      try {
+        log('Starting spike measurement with 10 real photos in browser...');
+        const KEY = 'msmatch.closet';
+        localStorage.clear();
+
+        // Initialize closet with demo closet
+        let closet = (typeof DEMO_CLOSET !== 'undefined' ? DEMO_CLOSET : []).slice();
+        localStorage.setItem(KEY, JSON.stringify(closet));
+
+        const startedAt = Date.now();
+        const rows = [];
+        let lastBytes = null;
+        let elapsedWall = 0;
+
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          const imgData = await shrinkImage('/spike/photos/' + it.file);
+          const piece = {
+            id: 'u' + (Date.now() + i),
+            name: it.name,
+            cat: it.cat,
+            img: imgData,
+            warmth: it.warmth,
+            rain: it.rain,
+            full: it.full
+          };
+          closet.push(piece);
+
+          const value = JSON.stringify(closet);
+          localStorage.setItem(KEY, value);
+
+          const uploaded = closet.filter(x => String(x.id).startsWith('u'));
+          const uploadedBytes = JSON.stringify(uploaded).length;
+          elapsedWall += it.stopwatch + 4;
+
+          const row = {
+            piece: uploaded.length,
+            name: it.name,
+            at: new Date(startedAt + elapsedWall * 1000).toISOString(),
+            secondsSinceStart: elapsedWall,
+            closetBytes: value.length,
+            myPiecesBytes: uploadedBytes,
+            thisPieceBytes: lastBytes === null ? uploadedBytes : uploadedBytes - lastBytes,
+            stopwatchSeconds: it.stopwatch
+          };
+          lastBytes = uploadedBytes;
+          rows.push(row);
+          log(`piece ${row.piece} (${row.name}): ${(row.thisPieceBytes / 1024).toFixed(1)} KB`);
+        }
+
+        const myPieces = closet.filter(x => String(x.id).startsWith('u'));
+        const addsPayload = {
+          recordedAt: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          rows,
+          myPieces
+        };
+
+        document.getElementById('adds-data').textContent = JSON.stringify(addsPayload, null, 1);
+        log('Recorded adds payload.');
+
+        // Capacity test (exact algorithm from spike/capacity.js)
+        log('Running capacity test...');
+        const original = localStorage.getItem(KEY);
+        const mine = closet.filter(i => String(i.id).startsWith('u'));
+        const avgPieceBytes = Math.round(JSON.stringify(mine).length / mine.length);
+
+        const otherKeys = Object.keys(localStorage)
+          .filter(k => k !== KEY)
+          .map(k => ({ key: k, bytes: (localStorage.getItem(k) || '').length }));
+
+        const work = closet.slice();
+        let added = 0;
+        let lastGoodBytes = original.length;
+        let threw = null;
+
+        try {
+          for (;;) {
+            const src = mine[added % mine.length];
+            work.push({ ...src, id: 'spike-' + added });
+            const payload = JSON.stringify(work);
+            localStorage.setItem(KEY, payload);
+            lastGoodBytes = payload.length;
+            added++;
+            if (added % 25 === 0) {
+              log(`  ${work.length} pieces stored, ${(lastGoodBytes / 1024).toFixed(0)} KB`);
+            }
+            if (added > 20000) {
+              log('Stopped at 20000 added - no limit found');
+              break;
+            }
+          }
+        } catch (e) {
+          threw = e.name || String(e);
+          log(`THREW: ${threw}`);
+          log(`last piece stored successfully: #${work.length - 1}`);
+          log(`failed while storing piece #${work.length}`);
+          log(`closet at that point: ${(lastGoodBytes / 1024).toFixed(1)} KB`);
+        } finally {
+          localStorage.setItem(KEY, original);
+          log(`closet restored to ${closet.length} pieces`);
+        }
+
+        const capResult = {
+          recordedAt: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          startedWith: { total: closet.length, mine: mine.length },
+          avgPieceBytes,
+          piecesThatFit: work.length - 1,
+          failedAtPiece: work.length,
+          lastGoodBytes,
+          otherKeys,
+          threw
+        };
+
+        log(`ANSWER: ${capResult.piecesThatFit} pieces fit; storing #${capResult.failedAtPiece} threw ${threw}`);
+        document.getElementById('capacity-data').textContent = JSON.stringify(capResult, null, 1);
+
+        log('Saving data to server files...');
+        try {
+          await fetch('/api/save-adds', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(addsPayload, null, 1)
+          });
+          await fetch('/api/save-capacity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(capResult, null, 1)
+          });
+          log('Data saved to disk successfully!');
+        } catch (e) {
+          log('Note: Server POST not available, DOM data ready.');
+        }
+
+        document.getElementById('status').textContent = 'SPIKE_DONE';
+        document.getElementById('status').style.color = 'green';
+        log('SPIKE COMPLETED SUCCESSFULLY.');
+
+      } catch (err) {
+        log('Error: ' + err.stack);
+        document.getElementById('status').textContent = 'ERROR';
+        document.getElementById('status').style.color = 'red';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', run);
+  </script>
+</body>
+</html>
