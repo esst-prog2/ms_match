@@ -1,0 +1,23 @@
+{
+ "recordedAt": "2026-10-03T19:11:56.464Z",
+ "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "startedWith": {
+  "total": 31,
+  "mine": 10
+ },
+ "avgPieceBytes": 80990,
+ "piecesThatFit": 84,
+ "failedAtPiece": 85,
+ "lastGoodBytes": 5182832,
+ "otherKeys": [
+  {
+   "key": "shopifySelectors",
+   "bytes": 289
+  },
+  {
+   "key": "debug",
+   "bytes": 16
+  }
+ ],
+ "threw": "QuotaExceededError"
+}
