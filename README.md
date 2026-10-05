@@ -51,7 +51,7 @@ Explicitly not this term:
 
 ## 5. What could stop this
 
-- **Storage.** The closet lives in `localStorage`, which is around 5 MB: measured against 10 real garments, a piece takes 72.5 KB (median) and `localStorage` fits 84 pieces before throwing `QuotaExceededError` at 5,061 KB (Chrome). The earlier guess of 50 to 60 was an underestimate by ~40%. Past that the browser refuses to store more. The app says so and does not pretend the piece was added, but a full wardrobe will eventually need IndexedDB.
+- **Storage.** The closet lives in `localStorage`, which is around 5 MB: measured against 10 real garments, a piece takes 72.5 KB (median) and `localStorage` fits 63 of my own photos alongside the 21 stock pieces (84 pieces total) before throwing `QuotaExceededError` at 5,061 KB (Chrome). The earlier guess of 50 to 60 was remarkably close to the measured 63. Past that the browser refuses to store more. The app says so and does not pretend the piece was added, but a full wardrobe will eventually need IndexedDB.
 - **Photos that do not read at card size.** A polaroid is small. A piece photographed from far away, or one that blends into its background, is hard to recognise at that size. I photograph each piece close up on a plain background.
 - **Four slots.** The board holds a top, a bottom, shoes and one extra. An outfit with two extras, or with a jacket over a top, has nowhere to go yet.
 
