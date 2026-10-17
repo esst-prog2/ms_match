@@ -19,7 +19,8 @@ let calMonth = new Date(); calMonth.setDate(1);
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 let models  = [...MODELS, ...(list(load(STORE.models)) || [])];   // built-in + uploaded
 let modelId = load(STORE.model)  || MODELS[0].id;   // white suit by default
-let current = { top: null, bottom: null, shoes: null, extra: null };
+const emptyLook = () => Object.fromEntries(SLOTS.map(s => [s, null]));
+let current = emptyLook();
 let weather = { days: null, day: 0 };
 let filter  = 'all';
 
@@ -30,6 +31,7 @@ function save(key, v) {
   try { localStorage.setItem(key, JSON.stringify(v)); return true; }
   catch { setStatus('storage is full — remove some uploaded photos'); return false; }
 }
+const notSaved = what => `storage is full — ${what} not saved. Remove some uploaded photos and try again.`;
 function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 function byId(id) { return closet.find(i => i.id === id) || null; }
 function itemsIn(cat) { return closet.filter(i => i.cat === cat); }
@@ -40,11 +42,11 @@ function $(s) { return document.querySelector(s); }
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 function setStatus(msg) { $('#status').textContent = msg; }
 function wearsDress() { const t = byId(current.top); return !!(t && t.full); }
+function currentModel() { return models.find(m => m.id === modelId) || models[0]; }
 
 // ---------- stage: model + pinned pieces ----------------------------
 function drawStage() {
-  const model = models.find(m => m.id === modelId) || models[0];
-  $('#model-img').src = model.img;
+  $('#model-img').src = currentModel().img;
 
   for (const slot of SLOTS) {
     const pin = document.querySelector(`.pin[data-slot="${slot}"]`);
@@ -113,14 +115,14 @@ async function matchMe() {
   if (spinning) return;
   spinning = true;
   const stage = $('#stage');
-  const final = {};
-  for (const slot of SLOTS) { const items = itemsIn(slot); final[slot] = items.length ? pick(items).id : null; }
+  const randomLook = () => Object.fromEntries(SLOTS.map(s => { const items = itemsIn(s); return [s, items.length ? pick(items).id : null]; }));
+  const final = randomLook();
 
   stage.classList.remove('scan', 'matched');
   stage.classList.add('spin');
   setStatus('matching…');
   for (let i = 0; i < 16; i++) {
-    for (const slot of SLOTS) { const items = itemsIn(slot); current[slot] = items.length ? pick(items).id : null; }
+    current = randomLook();
     drawStage();
     await sleep(70 + i * 22);              // ease out, like a wheel slowing down
   }
@@ -147,6 +149,12 @@ const CODES = {
   95: ['⛈', 'thunderstorm'], 96: ['⛈', 'storm with hail'], 99: ['⛈', 'storm with hail'],
 };
 const RAIN_CODES = [51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99];
+// The weather rule, shared by the suggestion and by "also works today":
+// warmth needed comes from the day's high, rain from its probability or code.
+function dayRule(day) {
+  return { need:  day.tmax < 8 ? 3 : day.tmax < 17 ? 2 : 1,
+           rainy: day.rain >= 50 || RAIN_CODES.includes(day.code) };
+}
 const DEFAULT_PLACE = { lat: 47.4979, lon: 19.0402, label: 'Budapest · default' };
 
 async function loadWeather() {
@@ -193,8 +201,7 @@ function drawWeather() {
 function suggest() {
   const day = weather.days && weather.days[weather.day];
   if (!day) { setStatus('no forecast yet'); return; }
-  const need  = day.tmax < 8 ? 3 : day.tmax < 17 ? 2 : 1;
-  const rainy = day.rain >= 50 || RAIN_CODES.includes(day.code);
+  const { need, rainy } = dayRule(day);
 
   const best = (cat, exclude = []) => {
     let items = itemsIn(cat).filter(i => !exclude.includes(i.id));
@@ -241,7 +248,7 @@ function wearLook(look) {
   const ok = save(STORE.worn, worn) && save(STORE.saved, saved) && save(STORE.history, history);
   drawSaved(); drawExtras();
   setStatus(ok ? `wearing it today · ${dayKey()} saved to the calendar`
-               : 'storage is full — today was not saved to the calendar. Remove some uploaded photos and try again.');
+               : notSaved('today was'));
 }
 
 function wearIt() {
@@ -314,7 +321,7 @@ async function addItem(form) {
   // not stored must not sit in the closet looking as though it were saved
   if (!save(STORE.closet, closet)) {
     closet.pop();
-    setStatus('storage is full — the piece was not saved. Remove some uploaded photos and try again.');
+    setStatus(notSaved('the piece was'));
     return;
   }
   form.reset(); refresh(false);
@@ -330,7 +337,7 @@ async function uploadModel(file) {
   models.push(m);
   if (!save(STORE.models, models.filter(x => x.id.startsWith('um')))) {
     models.pop();                          // keep the photos that are stored
-    setStatus('storage is full — the photo was not saved. Remove some uploaded photos and try again.');
+    setStatus(notSaved('the photo was'));
     refresh(false);
     return;
   }
@@ -348,7 +355,7 @@ function resetDemo() {
   if (closet.some(i => i.id.startsWith('u'))
       && !confirm('This deletes every piece you added yourself. Reset the closet?')) return;
   closet = DEMO_CLOSET.map(i => ({ ...i })); save(STORE.closet, closet);
-  current = { top: null, bottom: null, shoes: null, extra: null };
+  current = emptyLook();
   refresh(false); setStatus('demo closet restored');
 }
 
@@ -368,8 +375,7 @@ function drawExtras() {
   $('#ticker').innerHTML = html + html;
 
   // "also works today": the next-best pieces that are not on the model right now
-  const need  = day ? (day.tmax < 8 ? 3 : day.tmax < 17 ? 2 : 1) : 2;
-  const rainy = day ? (day.rain >= 50 || RAIN_CODES.includes(day.code)) : false;
+  const { need, rainy } = day ? dayRule(day) : { need: 2, rainy: false };
   const onModel = Object.values(current);
   const alts = closet
     .filter(i => !onModel.includes(i.id) && (!rainy || i.rain))
@@ -392,8 +398,7 @@ function drawExtras() {
   $('#stamp').classList.toggle('on', !!(wornLook && wornLook.ids.join() === currentIds().join()));
 
   // hero portrait follows the chosen model
-  const model = models.find(m => m.id === modelId) || models[0];
-  $('#hero-portrait img').src = model.img;
+  $('#hero-portrait img').src = currentModel().img;
 }
 
 // ---------- outfit calendar ----------------------------------------------------
