@@ -10,3 +10,4 @@ Each file here is one specialised review of the whole repository (not a diff), r
 | 4 | Duplication and simplicity | [04-duplication.md](04-duplication.md) |
 | 5 | Accessibility | [05-accessibility.md](05-accessibility.md) |
 | 6 | Tests | [06-tests.md](06-tests.md) |
+| 7 | Documentation and specs | [07-docs-and-specs.md](07-docs-and-specs.md) |

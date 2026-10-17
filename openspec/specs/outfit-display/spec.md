@@ -22,6 +22,7 @@ The application SHALL show each chosen piece at a fixed position around the mode
 
 - **WHEN** a piece is displayed
 - **THEN** the photo is shown opaque, and nothing of the model behind it shows through it
+
 ### Requirement: Each piece is framed as a polaroid held by a pin
 
 The application SHALL present every piece as a polaroid: the photo inside a white frame that is deeper along the bottom edge, with the piece's name written in that lower margin, and a pin holding the card in place.
@@ -35,6 +36,7 @@ The application SHALL present every piece as a polaroid: the photo inside a whit
 
 - **WHEN** any piece is displayed
 - **THEN** a pin is visible on the card, in the same place on each of them
+
 ### Requirement: A dress hides the bottom slot
 
 When the chosen top is a full-length piece, the application SHALL leave the bottom slot empty and SHALL NOT display a bottom piece on the model.
@@ -43,3 +45,21 @@ When the chosen top is a full-length piece, the application SHALL leave the bott
 
 - **WHEN** a piece marked as full-length is chosen as the top while a bottom piece is already chosen
 - **THEN** no bottom piece is displayed on the model, and the bottom slot is shown as inactive
+
+### Requirement: A piece's name is shown as text
+
+The application SHALL display every name the user typed exactly as text wherever it appears, and SHALL NOT interpret any part of it as markup or code.
+
+#### Scenario: A name that looks like a tag
+
+- **WHEN** a piece named `<img src=x onerror=alert(1)>` is added
+- **THEN** the closet shows those characters as its name, and no image element or script is created from it
+
+### Requirement: The board works from the keyboard
+
+Every element that acts when clicked, including closet cards, saved looks, model photos, suggested pieces and calendar days, SHALL be reachable with the Tab key, SHALL act on Enter or Space, and SHALL show a visible focus indicator.
+
+#### Scenario: Choosing a piece without a mouse
+
+- **WHEN** the user tabs to a closet card and presses Enter
+- **THEN** the piece is put on the board exactly as a click would
