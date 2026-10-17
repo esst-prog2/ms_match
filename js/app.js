@@ -8,13 +8,16 @@ const SLOTS = ['top', 'bottom', 'shoes', 'extra'];
 const STORE = { closet: 'msmatch.closet', saved: 'msmatch.saved', worn: 'msmatch.worn', model: 'msmatch.model', models: 'msmatch.models', history: 'msmatch.history' };
 
 // ---------- state --------------------------------------------------
-let closet  = load(STORE.closet) || DEMO_CLOSET.map(i => ({ ...i }));
-let saved   = load(STORE.saved)  || [];
+// a value that is missing or has the wrong shape (edited by hand, written by an
+// older version) falls back to the default instead of breaking the page
+const list = v => (Array.isArray(v) ? v : null);
+let closet  = list(load(STORE.closet)) || DEMO_CLOSET.map(i => ({ ...i }));
+let saved   = list(load(STORE.saved))  || [];
 let worn    = load(STORE.worn)   || null;
 let history = load(STORE.history) || {};          // 'YYYY-MM-DD' -> look id
 let calMonth = new Date(); calMonth.setDate(1);
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-let models  = [...MODELS, ...(load(STORE.models) || [])];   // built-in + uploaded
+let models  = [...MODELS, ...(list(load(STORE.models)) || [])];   // built-in + uploaded
 let modelId = load(STORE.model)  || MODELS[0].id;   // white suit by default
 let current = { top: null, bottom: null, shoes: null, extra: null };
 let weather = { days: null, day: 0 };
@@ -152,7 +155,9 @@ async function loadWeather() {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}`
     + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=2`;
   try {
-    const d = (await (await fetch(url)).json()).daily;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`forecast HTTP ${res.status}`);
+    const d = (await res.json()).daily;
     weather.days = [0, 1].map(i => ({
       date: d.time[i], code: d.weather_code[i],
       tmax: Math.round(d.temperature_2m_max[i]), tmin: Math.round(d.temperature_2m_min[i]),
@@ -221,8 +226,9 @@ function saveLook(silent) {
   if (!ids.some(Boolean)) { setStatus('nothing to save'); return null; }
   let look = saved.find(l => l.ids.join() === ids.join());
   if (!look) {
-    look = { id: 'l' + Date.now(), ids, ts: new Date().toISOString().slice(0, 10) };
-    saved.unshift(look); save(STORE.saved, saved);
+    look = { id: 'l' + Date.now(), ids, ts: dayKey() };
+    saved.unshift(look);
+    if (!save(STORE.saved, saved)) { saved.shift(); return null; }   // save() already said why
   }
   drawSaved();
   if (!silent) setStatus('look saved');
@@ -230,11 +236,13 @@ function saveLook(silent) {
 }
 
 function wearLook(look) {
-  worn = look.id; save(STORE.worn, worn);
-  look.wornAt = Date.now(); save(STORE.saved, saved);
-  history[dayKey()] = look.id; save(STORE.history, history);
+  worn = look.id;
+  look.wornAt = Date.now();
+  history[dayKey()] = look.id;
+  const ok = save(STORE.worn, worn) && save(STORE.saved, saved) && save(STORE.history, history);
   drawSaved(); drawExtras();
-  setStatus(`wearing it today · ${dayKey()} saved to the calendar`);
+  setStatus(ok ? `wearing it today · ${dayKey()} saved to the calendar`
+               : 'storage is full — today was not saved to the calendar. Remove some uploaded photos and try again.');
 }
 
 function wearIt() {
@@ -278,15 +286,17 @@ function drawCloset() {
 function shrink(file, max = 520) {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    const url = URL.createObjectURL(file);
     img.onload = () => {
+      URL.revokeObjectURL(url);             // the file is drawn, release it
       const k = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement('canvas');
       c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       resolve(c.toDataURL('image/jpeg', 0.82));
     };
-    img.onerror = reject;
-    img.src = URL.createObjectURL(file);
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('not an image')); };
+    img.src = url;
   });
 }
 
@@ -294,8 +304,12 @@ async function addItem(form) {
   const f = new FormData(form);
   const file = f.get('photo');
   if (!file || !file.size) { setStatus('pick a photo first'); return; }
-  const img = await shrink(file);
-  closet.push({ id: 'u' + Date.now(), name: f.get('name').trim(), cat: f.get('cat'), img,
+  const name = String(f.get('name') || '').trim();
+  if (!name) { setStatus('give the piece a name first'); return; }
+  let img;
+  try { img = await shrink(file); }
+  catch { setStatus('that file could not be read as a photo'); return; }
+  closet.push({ id: 'u' + Date.now(), name, cat: f.get('cat'), img,
                 warmth: Number(f.get('warmth')), rain: f.get('rain') === 'on', full: f.get('full') === 'on' });
   // if the browser refuses the write, take the piece back out: a piece that is
   // not stored must not sit in the closet looking as though it were saved
@@ -310,7 +324,9 @@ async function addItem(form) {
 
 async function uploadModel(file) {
   if (!file) return;
-  const img = await shrink(file, 900);
+  let img;
+  try { img = await shrink(file, 900); }
+  catch { setStatus('that file could not be read as a photo'); return; }
   const m = { id: 'um' + Date.now(), name: 'you', img };
   models.push(m);
   if (!save(STORE.models, models.filter(x => x.id.startsWith('um')))) {
@@ -330,6 +346,8 @@ function removeItem(id) {
 }
 
 function resetDemo() {
+  if (closet.some(i => i.id.startsWith('u'))
+      && !confirm('This deletes every piece you added yourself. Reset the closet?')) return;
   closet = DEMO_CLOSET.map(i => ({ ...i })); save(STORE.closet, closet);
   current = { top: null, bottom: null, shoes: null, extra: null };
   refresh(false); setStatus('demo closet restored');
@@ -469,7 +487,9 @@ function init() {
   $('#btn-wear').addEventListener('click', wearIt);
   $('#btn-suggest').addEventListener('click', suggest);
   $('#btn-reset-demo').addEventListener('click', resetDemo);
-  $('#btn-clear-saved').addEventListener('click', () => { saved = []; worn = null; history = {}; save(STORE.saved, saved); save(STORE.worn, worn); save(STORE.history, history); drawSaved(); drawExtras(); });
+  $('#btn-clear-saved').addEventListener('click', () => {
+    if (saved.length && !confirm('Delete every saved look and the whole outfit calendar?')) return;
+    saved = []; worn = null; history = {}; save(STORE.saved, saved); save(STORE.worn, worn); save(STORE.history, history); drawSaved(); drawExtras(); });
   $('#add-form').addEventListener('submit', e => { e.preventDefault(); addItem(e.target); });
 
   refresh(false);
