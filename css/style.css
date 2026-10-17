@@ -237,9 +237,8 @@ body {
 .stage.scan .model, .stage.spin .model {
   filter: grayscale(1) contrast(1.35) brightness(.75) sepia(1) hue-rotate(295deg) saturate(2.4);
 }
-/* During the sweep the stage turns wine-dark. multiply against a dark backdrop
-   would swallow the pieces, so they blend normally for the length of the
-   animation and glow instead. */
+/* During the sweep the stage turns wine-dark, so the pinned polaroids glow
+   pink for the length of the animation instead of sinking into it. */
 .stage.scan .pin.on, .stage.spin .pin.on {
   background: var(--blush); border-color: var(--glow);
   box-shadow: 0 0 0 2px var(--glow), 0 0 22px 4px rgba(255,143,197,.6);

@@ -66,7 +66,7 @@ function drawStage() {
   $('#model-upload').addEventListener('change', e => uploadModel(e.target.files[0]));
 }
 
-const SCAN_MS = 2600;
+const SCAN_MS = 2600;                     // a little longer than the 2.4s sweep in style.css
 let scanTimer = null;
 function scan() {
   const stage = $('#stage');
@@ -237,7 +237,6 @@ function saveLook(silent) {
 
 function wearLook(look) {
   worn = look.id;
-  look.wornAt = Date.now();
   history[dayKey()] = look.id;
   const ok = save(STORE.worn, worn) && save(STORE.saved, saved) && save(STORE.history, history);
   drawSaved(); drawExtras();
