@@ -71,7 +71,7 @@
       <span class="note n3">today's pick ↓</span>
       <span class="note n4">match me →</span>
       <div class="stage" id="stage">
-        <img class="model" id="model-img" src="" alt="model">
+        <img class="model" id="model-img" src="" alt="the model photo the outfit is pinned around">
         <div class="pin pin-top"    data-slot="top"></div>
         <div class="pin pin-bottom" data-slot="bottom"></div>
         <div class="pin pin-shoes"  data-slot="shoes"></div>
@@ -93,27 +93,27 @@
       </div>
 
       <div class="slot" data-slot="top">
-        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <button class="arrow" data-dir="-1" aria-label="previous top">‹</button>
         <div class="slot-card"><img alt=""><div class="slot-empty">top</div></div>
-        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <button class="arrow" data-dir="1" aria-label="next top">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="bottom">
-        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <button class="arrow" data-dir="-1" aria-label="previous bottom">‹</button>
         <div class="slot-card"><img alt=""><div class="slot-empty">bottom</div></div>
-        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <button class="arrow" data-dir="1" aria-label="next bottom">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="shoes">
-        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <button class="arrow" data-dir="-1" aria-label="previous shoes">‹</button>
         <div class="slot-card"><img alt=""><div class="slot-empty">shoes</div></div>
-        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <button class="arrow" data-dir="1" aria-label="next shoes">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="extra">
-        <button class="arrow" data-dir="-1" aria-label="previous">‹</button>
+        <button class="arrow" data-dir="-1" aria-label="previous extra">‹</button>
         <div class="slot-card"><img alt=""><div class="slot-empty">extra</div></div>
-        <button class="arrow" data-dir="1" aria-label="next">›</button>
+        <button class="arrow" data-dir="1" aria-label="next extra">›</button>
         <div class="slot-name"></div>
       </div>
 
@@ -168,14 +168,14 @@
 
     <form class="add-form" id="add-form">
       <span class="form-title">Add a piece</span>
-      <input name="name" placeholder="name" maxlength="40" required>
-      <select name="cat">
+      <input name="name" placeholder="name" maxlength="40" required aria-label="name of the piece">
+      <select name="cat" aria-label="category">
         <option value="top">top</option>
         <option value="bottom">bottom</option>
         <option value="shoes">shoes</option>
         <option value="extra">extra</option>
       </select>
-      <select name="warmth">
+      <select name="warmth" aria-label="warmth">
         <option value="1">light</option>
         <option value="2" selected>mid</option>
         <option value="3">warm</option>
@@ -188,13 +188,13 @@
   </section>
 
   <!-- ---------- outfit calendar (modal) ---------- -->
-  <div class="modal" id="cal" hidden>
+  <div class="modal" id="cal" hidden role="dialog" aria-modal="true" aria-labelledby="cal-title">
     <div class="modal-card">
       <button class="modal-close" id="cal-close" aria-label="close">×</button>
       <div class="cal-head">
-        <button class="arrow" id="cal-prev">‹</button>
+        <button class="arrow" id="cal-prev" aria-label="previous month">‹</button>
         <h2 class="title" id="cal-title">—</h2>
-        <button class="arrow" id="cal-next">›</button>
+        <button class="arrow" id="cal-next" aria-label="next month">›</button>
       </div>
       <div class="cal-week"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
       <div class="cal-grid" id="cal-grid"></div>
@@ -203,7 +203,7 @@
   </div>
 
   <footer class="foot">
-    <span id="status">ready</span>
+    <span id="status" role="status" aria-live="polite">ready</span>
     <span>photos: Unsplash · weather: Open-Meteo · everything stays in your browser</span>
   </footer>
 </main>

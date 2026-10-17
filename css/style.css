@@ -570,3 +570,11 @@ body {
 .cal-day .thumbs { display: flex; gap: 2px; margin-top: 5px; flex-wrap: wrap; }
 .cal-day .thumbs img { width: 22px; height: 28px; object-fit: cover; border: 1px solid var(--wine); }
 .cal-note { text-align: center; margin: 14px 0 0; color: var(--rose); }
+
+/* keyboard focus: a visible ring on everything that can be reached with Tab */
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+/* no sweeping, spinning or scrolling ticker for anyone who asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

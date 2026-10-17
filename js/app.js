@@ -63,7 +63,7 @@ function drawStage() {
   $('#stage-caption').textContent = names.length ? names.join(' · ') : 'Choose pieces from the closet';
 
   $('#model-picker').innerHTML = models.map(m =>
-    `<img src="${esc(m.img)}" title="${esc(m.name)}" data-id="${esc(m.id)}" class="${m.id === modelId ? 'on' : ''}">`).join('')
+    `<img src="${esc(m.img)}" alt="model: ${esc(m.name)}" title="${esc(m.name)}" data-id="${esc(m.id)}" class="${m.id === modelId ? 'on' : ''}" tabindex="0" role="button" aria-pressed="${m.id === modelId}">`).join('')
     + `<label class="file">+ your photo<input type="file" accept="image/*" id="model-upload"></label>`;
   $('#model-upload').addEventListener('change', e => uploadModel(e.target.files[0]));
 }
@@ -262,12 +262,12 @@ function drawSaved() {
   if (!saved.length) { list.innerHTML = '<span class="empty">No looks saved yet.</span>'; return; }
   list.innerHTML = saved.map(l => {
     const items = l.ids.map(byId).filter(Boolean);
-    const thumbs = items.map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}">`).join('');
-    return `<div class="saved-item ${l.id === worn ? 'worn' : ''}" data-id="${esc(l.id)}">
+    const thumbs = items.map(i => `<img src="${esc(i.img)}" alt="${esc(i.name)}" title="${esc(i.name)}">`).join('');
+    return `<div class="saved-item ${l.id === worn ? 'worn' : ''}" data-id="${esc(l.id)}" tabindex="0" role="button" aria-label="show the look saved on ${esc(l.ts)}">
       <div class="thumbs">${thumbs || '—'}</div>
       <div class="meta">${esc(l.ts)}<br>${items.length} pieces</div>
       <button class="wear" data-wear="${esc(l.id)}">wear it</button>
-      <button class="del" data-del="${esc(l.id)}" title="remove">×</button></div>`;
+      <button class="del" data-del="${esc(l.id)}" title="remove" aria-label="remove this look">×</button></div>`;
   }).join('');
 }
 
@@ -281,8 +281,8 @@ function loadLook(id) {
 // ---------- closet -------------------------------------------------------
 function drawCloset() {
   $('#closet-grid').innerHTML = closet.map(item => `
-    <div class="closet-item ${Object.values(current).includes(item.id) ? 'on' : ''} ${filter !== 'all' && item.cat !== filter ? 'hidden' : ''}" data-id="${esc(item.id)}" data-cat="${esc(item.cat)}">
-      <button class="del" data-del="${esc(item.id)}" title="remove">×</button>
+    <div class="closet-item ${Object.values(current).includes(item.id) ? 'on' : ''} ${filter !== 'all' && item.cat !== filter ? 'hidden' : ''}" data-id="${esc(item.id)}" data-cat="${esc(item.cat)}" tabindex="0" role="button" aria-pressed="${Object.values(current).includes(item.id)}">
+      <button class="del" data-del="${esc(item.id)}" title="remove" aria-label="remove ${esc(item.name)}">×</button>
       <img src="${esc(item.img)}" alt="${esc(item.name)}">
       <div class="label">${esc(item.name)}<small>${esc(item.cat)} · ${['', 'light', 'mid', 'warm'][item.warmth] || ''}${item.rain ? ' · rain ok' : ''}</small></div>
     </div>`).join('');
@@ -381,7 +381,7 @@ function drawExtras() {
     .filter(i => !onModel.includes(i.id) && (!rainy || i.rain))
     .map(i => ({ i, s: Math.abs(i.warmth - need) }))
     .sort((a, b) => a.s - b.s).slice(0, 6).map(x => x.i);
-  $('#pairings').innerHTML = alts.map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}" data-id="${esc(i.id)}">`).join('');
+  $('#pairings').innerHTML = alts.map(i => `<img src="${esc(i.img)}" alt="${esc(i.name)}" title="${esc(i.name)}" data-id="${esc(i.id)}" tabindex="0" role="button">`).join('');
 
   // stylist's note
   const top = byId(current.top), shoes = byId(current.shoes), extra = byId(current.extra);
@@ -415,13 +415,13 @@ function drawCalendar() {
     const key = dayKey(new Date(y, m, d));
     const look = history[key] && saved.find(l => l.id === history[key]);
     const items = look ? look.ids.map(byId).filter(Boolean) : [];
-    html += `<div class="cal-day ${look ? 'worn' : ''} ${key === today ? 'today' : ''}" ${look ? `data-look="${esc(look.id)}"` : ''}>
+    html += `<div class="cal-day ${look ? 'worn' : ''} ${key === today ? 'today' : ''}" ${look ? `data-look="${esc(look.id)}" tabindex="0" role="button" aria-label="${d}: show what I wore"` : ''}>
       <span class="d">${d}</span>
-      <div class="thumbs">${items.slice(0, 4).map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}">`).join('')}</div></div>`;
+      <div class="thumbs">${items.slice(0, 4).map(i => `<img src="${esc(i.img)}" alt="${esc(i.name)}" title="${esc(i.name)}">`).join('')}</div></div>`;
   }
   $('#cal-grid').innerHTML = html;
 }
-function openCalendar() { calMonth = new Date(); calMonth.setDate(1); drawCalendar(); $('#cal').hidden = false; }
+function openCalendar() { calMonth = new Date(); calMonth.setDate(1); drawCalendar(); $('#cal').hidden = false; $('#cal-close').focus(); }
 
 // ---------- glue -----------------------------------------------------------
 function refresh(withScan) {
@@ -486,7 +486,11 @@ function init() {
     const d = e.target.closest('[data-look]');
     if (d) { loadLook(d.dataset.look); $('#cal').hidden = true; }
   });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#cal').hidden = true; });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') $('#cal').hidden = true;
+    // the cards and thumbnails drawn as role="button" answer Enter and Space like a real button
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute?.('role') === 'button') { e.preventDefault(); e.target.click(); }
+  });
   $('#btn-save').addEventListener('click', () => saveLook(false));
   $('#btn-wear').addEventListener('click', wearIt);
   $('#btn-suggest').addEventListener('click', suggest);
