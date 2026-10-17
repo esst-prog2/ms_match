@@ -31,6 +31,10 @@ function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 function byId(id) { return closet.find(i => i.id === id) || null; }
 function itemsIn(cat) { return closet.filter(i => i.cat === cat); }
 function $(s) { return document.querySelector(s); }
+// Everything a user typed (a piece's name) or that came back from storage is
+// escaped before it goes into innerHTML, so a name like <img onerror=…> is
+// shown as text instead of running as code.
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 function setStatus(msg) { $('#status').textContent = msg; }
 function wearsDress() { const t = byId(current.top); return !!(t && t.full); }
 
@@ -45,7 +49,7 @@ function drawStage() {
     // a dress fills the bottom too, so that slot stays empty
     const show = item && !(slot === 'bottom' && wearsDress());
     pin.innerHTML = show
-      ? `<img src="${item.img}" alt="${item.name}" title="${item.name}"><span class="cap">${item.name}</span>`
+      ? `<img src="${esc(item.img)}" alt="${esc(item.name)}" title="${esc(item.name)}"><span class="cap">${esc(item.name)}</span>`
       : '';
     pin.classList.toggle('on', !!show);
   }
@@ -54,7 +58,7 @@ function drawStage() {
   $('#stage-caption').textContent = names.length ? names.join(' · ') : 'Choose pieces from the closet';
 
   $('#model-picker').innerHTML = models.map(m =>
-    `<img src="${m.img}" title="${m.name}" data-id="${m.id}" class="${m.id === modelId ? 'on' : ''}">`).join('')
+    `<img src="${esc(m.img)}" title="${esc(m.name)}" data-id="${esc(m.id)}" class="${m.id === modelId ? 'on' : ''}">`).join('')
     + `<label class="file">+ your photo<input type="file" accept="image/*" id="model-upload"></label>`;
   $('#model-upload').addEventListener('change', e => uploadModel(e.target.files[0]));
 }
@@ -244,12 +248,12 @@ function drawSaved() {
   if (!saved.length) { list.innerHTML = '<span class="empty">No looks saved yet.</span>'; return; }
   list.innerHTML = saved.map(l => {
     const items = l.ids.map(byId).filter(Boolean);
-    const thumbs = items.map(i => `<img src="${i.img}" title="${i.name}">`).join('');
-    return `<div class="saved-item ${l.id === worn ? 'worn' : ''}" data-id="${l.id}">
+    const thumbs = items.map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}">`).join('');
+    return `<div class="saved-item ${l.id === worn ? 'worn' : ''}" data-id="${esc(l.id)}">
       <div class="thumbs">${thumbs || '—'}</div>
-      <div class="meta">${l.ts}<br>${items.length} pieces</div>
-      <button class="wear" data-wear="${l.id}">wear it</button>
-      <button class="del" data-del="${l.id}" title="remove">×</button></div>`;
+      <div class="meta">${esc(l.ts)}<br>${items.length} pieces</div>
+      <button class="wear" data-wear="${esc(l.id)}">wear it</button>
+      <button class="del" data-del="${esc(l.id)}" title="remove">×</button></div>`;
   }).join('');
 }
 
@@ -263,10 +267,10 @@ function loadLook(id) {
 // ---------- closet -------------------------------------------------------
 function drawCloset() {
   $('#closet-grid').innerHTML = closet.map(item => `
-    <div class="closet-item ${Object.values(current).includes(item.id) ? 'on' : ''} ${filter !== 'all' && item.cat !== filter ? 'hidden' : ''}" data-id="${item.id}" data-cat="${item.cat}">
-      <button class="del" data-del="${item.id}" title="remove">×</button>
-      <img src="${item.img}" alt="${item.name}">
-      <div class="label">${item.name}<small>${item.cat} · ${['', 'light', 'mid', 'warm'][item.warmth]}${item.rain ? ' · rain ok' : ''}</small></div>
+    <div class="closet-item ${Object.values(current).includes(item.id) ? 'on' : ''} ${filter !== 'all' && item.cat !== filter ? 'hidden' : ''}" data-id="${esc(item.id)}" data-cat="${esc(item.cat)}">
+      <button class="del" data-del="${esc(item.id)}" title="remove">×</button>
+      <img src="${esc(item.img)}" alt="${esc(item.name)}">
+      <div class="label">${esc(item.name)}<small>${esc(item.cat)} · ${['', 'light', 'mid', 'warm'][item.warmth] || ''}${item.rain ? ' · rain ok' : ''}</small></div>
     </div>`).join('');
 }
 
@@ -343,7 +347,7 @@ function drawExtras() {
     ...SLOTS.map(s => byId(current[s])).filter(Boolean).map(i => i.name),
     'wear it · save it · repeat',
   ];
-  const html = bits.map(b => `<span>${b}</span>`).join('');
+  const html = bits.map(b => `<span>${esc(b)}</span>`).join('');
   $('#ticker').innerHTML = html + html;
 
   // "also works today": the next-best pieces that are not on the model right now
@@ -354,7 +358,7 @@ function drawExtras() {
     .filter(i => !onModel.includes(i.id) && (!rainy || i.rain))
     .map(i => ({ i, s: Math.abs(i.warmth - need) }))
     .sort((a, b) => a.s - b.s).slice(0, 6).map(x => x.i);
-  $('#pairings').innerHTML = alts.map(i => `<img src="${i.img}" title="${i.name}" data-id="${i.id}">`).join('');
+  $('#pairings').innerHTML = alts.map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}" data-id="${esc(i.id)}">`).join('');
 
   // stylist's note
   const top = byId(current.top), shoes = byId(current.shoes), extra = byId(current.extra);
@@ -389,9 +393,9 @@ function drawCalendar() {
     const key = dayKey(new Date(y, m, d));
     const look = history[key] && saved.find(l => l.id === history[key]);
     const items = look ? look.ids.map(byId).filter(Boolean) : [];
-    html += `<div class="cal-day ${look ? 'worn' : ''} ${key === today ? 'today' : ''}" ${look ? `data-look="${look.id}"` : ''}>
+    html += `<div class="cal-day ${look ? 'worn' : ''} ${key === today ? 'today' : ''}" ${look ? `data-look="${esc(look.id)}"` : ''}>
       <span class="d">${d}</span>
-      <div class="thumbs">${items.slice(0, 4).map(i => `<img src="${i.img}" title="${i.name}">`).join('')}</div></div>`;
+      <div class="thumbs">${items.slice(0, 4).map(i => `<img src="${esc(i.img)}" title="${esc(i.name)}">`).join('')}</div></div>`;
   }
   $('#cal-grid').innerHTML = html;
 }
