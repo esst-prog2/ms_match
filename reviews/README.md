@@ -9,3 +9,4 @@ Each file here is one specialised review of the whole repository (not a diff), r
 | 3 | Dead code and leftovers | [03-dead-code.md](03-dead-code.md) |
 | 4 | Duplication and simplicity | [04-duplication.md](04-duplication.md) |
 | 5 | Accessibility | [05-accessibility.md](05-accessibility.md) |
+| 6 | Tests | [06-tests.md](06-tests.md) |
