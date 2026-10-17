@@ -48,7 +48,9 @@ function stubElement() {
 
 // Starts the real app on a storage of its own, or on the one given, so a
 // second startApp on the same storage is a page reload.
-function startApp({ quota = 5 * 1024 * 1024, storage = fakeStorage(quota) } = {}) {
+// fastTimers: every setTimeout fires on the next turn, so the few seconds of
+// Match me animation run instantly.
+function startApp({ quota = 5 * 1024 * 1024, storage = fakeStorage(quota), fastTimers = false } = {}) {
   const elements = new Map();
   const $ = sel => { if (!elements.has(sel)) elements.set(sel, stubElement()); return elements.get(sel); };
   const ctx = vm.createContext({
@@ -58,7 +60,7 @@ function startApp({ quota = 5 * 1024 * 1024, storage = fakeStorage(quota) } = {}
     fetch: () => Promise.reject(new Error('offline')),     // no forecast
     FormData: class { constructor(form) { this.form = form; } get(k) { return this.form[k]; } },
     confirm: () => true,
-    setTimeout, clearTimeout, console,
+    setTimeout: fastTimers ? fn => setImmediate(fn) : setTimeout, clearTimeout, console,
   });
   for (const file of ['js/closet.js', 'js/app.js']) {
     const src = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');

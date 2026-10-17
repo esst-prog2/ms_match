@@ -108,6 +108,18 @@ function toggle(item) {
   refresh(true);
 }
 
+// A random piece per slot. On a rainy day only rain-ok pieces take part,
+// whenever a slot has any, so Match me never ends on heels in the rain.
+function randomLook() {
+  const day = weather.days && weather.days[weather.day];
+  const rainy = day ? dayRule(day).rainy : false;
+  return Object.fromEntries(SLOTS.map(s => {
+    let items = itemsIn(s);
+    if (rainy && items.some(i => i.rain)) items = items.filter(i => i.rain);
+    return [s, items.length ? pick(items).id : null];
+  }));
+}
+
 // Match me = a little slot machine: the pins flick through random pieces,
 // slow down, "match!" pops, and then the outfit is shown with save / wear.
 let spinning = false;
@@ -115,7 +127,6 @@ async function matchMe() {
   if (spinning) return;
   spinning = true;
   const stage = $('#stage');
-  const randomLook = () => Object.fromEntries(SLOTS.map(s => { const items = itemsIn(s); return [s, items.length ? pick(items).id : null]; }));
   const final = randomLook();
 
   stage.classList.remove('scan', 'matched');

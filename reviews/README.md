@@ -11,3 +11,4 @@ Each file here is one specialised review of the whole repository (not a diff), r
 | 5 | Accessibility | [05-accessibility.md](05-accessibility.md) |
 | 6 | Tests | [06-tests.md](06-tests.md) |
 | 7 | Documentation and specs | [07-docs-and-specs.md](07-docs-and-specs.md) |
+| 8 | README promises (session 5: "would you notice?") | [08-readme-promises.md](08-readme-promises.md) |

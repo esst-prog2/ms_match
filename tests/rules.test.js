@@ -71,3 +71,18 @@ test('a file that cannot be read as a photo is reported and adds nothing', async
   assert.equal(run(ctx, 'closet.length'), 21);
   assert.equal(el(ctx, '#status').textContent, 'that file could not be read as a photo');
 });
+
+// Session 5, the note on Ms. Match: "on a rainy day the outfit button ignores
+// the weather, so it may still pick trainers or high heels". README section 1
+// promises the opposite: on a 70% rain day Match me ends on the boots.
+// Expected value, said before running: the demo closet has three pairs of
+// shoes and only d15, the black boots, is rain ok, so on a rainy day every
+// Match me ends on d15 and never on d14 (white sneakers) or d16 (red heels).
+test('on a 70% rain day Match me never picks trainers or heels, only the black boots', async () => {
+  const ctx = startApp({ fastTimers: true });
+  run(ctx, `weather.days = [${day({ rain: 70 })}]; weather.day = 0`);
+  for (let i = 0; i < 30; i++) {
+    await ctx.matchMe();
+    assert.equal(run(ctx, 'current.shoes'), 'd15', `Match me #${i + 1} picked ${run(ctx, 'current.shoes')}`);
+  }
+});
