@@ -16,68 +16,13 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const vm = require('node:vm');
+const { startApp, run } = require('./harness');
 
 const QUOTA = 5 * 1024 * 1024;        // 5,242,880 characters, keys and values
 const PIECE_CHARS = 72.5 * 1024;      // 74,240 characters per stored piece
 const DEMO = 21;
 const FIT = 70;                       // expected: this many of mine fit
 const REFUSED = FIT + 1;              // expected: this one is refused
-
-// localStorage as Chrome behaves at its limit: a write that would take the
-// origin past the quota throws and leaves the old value in place.
-function fakeStorage(quota) {
-  const data = new Map();
-  const used = () => [...data].reduce((n, [k, v]) => n + k.length + v.length, 0);
-  return {
-    getItem: k => (data.has(k) ? data.get(k) : null),
-    setItem(k, v) {
-      v = String(v);
-      const after = used() - (data.has(k) ? k.length + data.get(k).length : 0) + k.length + v.length;
-      if (after > quota) { const e = new Error('quota exceeded'); e.name = 'QuotaExceededError'; throw e; }
-      data.set(k, v);
-    },
-    removeItem: k => data.delete(k),
-  };
-}
-
-// Just enough DOM for app.js to start: every element accepts any property and
-// any call. The same selector always gives the same element, so the status
-// line can be read back.
-function stubElement() {
-  const props = {};
-  const fn = function () {};
-  return new Proxy(fn, {
-    get(_, k) {
-      if (k === Symbol.toPrimitive) return () => '';
-      if (k in props) return props[k];
-      if (k === 'forEach' || k === 'addEventListener') return () => {};
-      return stubElement();
-    },
-    set(_, k, v) { props[k] = v; return true; },
-    apply: () => stubElement(),
-  });
-}
-
-function startApp() {
-  const elements = new Map();
-  const $ = sel => { if (!elements.has(sel)) elements.set(sel, stubElement()); return elements.get(sel); };
-  const ctx = vm.createContext({
-    localStorage: fakeStorage(QUOTA),
-    document: { querySelector: $, querySelectorAll: () => [], getElementById: id => $('#' + id), addEventListener() {} },
-    navigator: {},                                         // no geolocation: default place
-    fetch: () => Promise.reject(new Error('offline')),     // no forecast
-    FormData: class { constructor(form) { this.form = form; } get(k) { return this.form[k]; } },
-    setTimeout, clearTimeout, console,
-  });
-  for (const file of ['js/closet.js', 'js/app.js']) {
-    const src = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
-    vm.runInContext(src, ctx, { filename: file });
-  }
-  return ctx;
-}
 
 // The id is 'u' + Date.now(), 14 characters, and the name has a fixed width,
 // so every piece serialises to the same length. The photo is padded until
@@ -94,10 +39,8 @@ function photoOfSize() {
   return 'data:image/jpeg;base64,'.padEnd(PIECE_CHARS - overhead, 'A');
 }
 
-const run = (ctx, code) => vm.runInContext(code, ctx);
-
 test(`${FIT} median pieces fit next to the ${DEMO} demo pieces, and piece ${REFUSED} is refused and not shown as added`, async () => {
-  const ctx = startApp();
+  const ctx = startApp({ quota: QUOTA });
   ctx.__photo = photoOfSize();
   run(ctx, 'shrink = async () => __photo');               // no canvas in Node
   assert.equal(run(ctx, 'closet.length'), DEMO);

@@ -237,9 +237,8 @@ body {
 .stage.scan .model, .stage.spin .model {
   filter: grayscale(1) contrast(1.35) brightness(.75) sepia(1) hue-rotate(295deg) saturate(2.4);
 }
-/* During the sweep the stage turns wine-dark. multiply against a dark backdrop
-   would swallow the pieces, so they blend normally for the length of the
-   animation and glow instead. */
+/* During the sweep the stage turns wine-dark, so the pinned polaroids glow
+   pink for the length of the animation instead of sinking into it. */
 .stage.scan .pin.on, .stage.spin .pin.on {
   background: var(--blush); border-color: var(--glow);
   box-shadow: 0 0 0 2px var(--glow), 0 0 22px 4px rgba(255,143,197,.6);
@@ -571,3 +570,11 @@ body {
 .cal-day .thumbs { display: flex; gap: 2px; margin-top: 5px; flex-wrap: wrap; }
 .cal-day .thumbs img { width: 22px; height: 28px; object-fit: cover; border: 1px solid var(--wine); }
 .cal-note { text-align: center; margin: 14px 0 0; color: var(--rose); }
+
+/* keyboard focus: a visible ring on everything that can be reached with Tab */
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+/* no sweeping, spinning or scrolling ticker for anyone who asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

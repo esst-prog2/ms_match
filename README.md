@@ -2,7 +2,7 @@
 
 ## Ms. Match: my closet, my photo, today's outfit
 
-A small web app I am building for myself. My clothes live in it as photos, it reads today's forecast, and one click pins today's outfit up beside a photo of me, like a little board I put together before I get dressed. It runs in the browser, with no server of my own, no account, and nothing sent anywhere. Project brief, sections 1 to 5 below.
+A small web app I am building for myself. My clothes live in it as photos, it reads today's forecast, and one click pins today's outfit up beside a photo of me, like a little board I put together before I get dressed. It runs in the browser, with no server of my own, no account, and none of my photos sent anywhere. Project brief, sections 1 to 5 below.
 
 ---
 
@@ -21,7 +21,7 @@ on screen  I press "Match me" or pick pieces by hand, the pieces go up as
            polaroids around me, and I save it, wear it, or match again
 ```
 
-No server of my own: everything is stored in the browser. One outside call: Open-Meteo for the forecast, which needs no key. No photo of me or of my clothes ever leaves the browser.
+No server of my own: everything is stored in the browser. Two outside calls: Open-Meteo for the forecast, which needs no key and only receives my coordinates, and Google Fonts for the typefaces. No photo of me or of my clothes ever leaves the browser.
 
 ## 3. The size
 
@@ -49,6 +49,8 @@ Explicitly not this term:
 - Given the browser refuses to store a new piece, the app says so and the closet after a reload holds exactly what it held before.
 - Given a look is worn on day X and the page is reloaded, the calendar still shows it on day X.
 
+The first, second, fifth and sixth are automated tests in `tests/`. The third and fourth are about how the board looks, so I check them by eye in the browser.
+
 ## 5. What could stop this
 
 - **Storage.** The closet lives in `localStorage`, which is around 5 MB: measured against 10 real garments, a piece takes 72.5 KB (median) and `localStorage` fits 63 of my own photos alongside the 21 stock pieces (84 pieces total) before throwing `QuotaExceededError` at 5,061 KB (Chrome). The earlier guess of 50 to 60 was remarkably close to the measured 63. Past that the browser refuses to store more. The app says so and does not pretend the piece was added, but a full wardrobe will eventually need IndexedDB.
@@ -56,3 +58,11 @@ Explicitly not this term:
 - **Four slots.** The board holds a top, a bottom, shoes and one extra. An outfit with two extras, or with a jacket over a top, has nowhere to go yet.
 
 What I could not fill in: whether a board of four polaroids is enough to decide what to wear, or whether I will keep wanting to see the pieces on me. Section 4 therefore checks rules, layout and persistence, not whether the answer is convincing.
+
+## Running it
+
+Open `index.html` in Chrome. Nothing needs to be installed.
+
+Tests: `node --test` in the project folder (Node 22, no packages). They load the real `js/closet.js` and `js/app.js` with a stub page and a fake `localStorage`.
+
+The HW6 code reviews and what was done about each are in `reviews/`.
