@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ms. Match — Galleria</title>
+  <!-- A second look for Ms. Match. It runs the same js/ and assets/ as the
+       original page, so every path below is written from the project root. -->
+  <base href="../">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cinzel:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="renaissance/style.css">
+</head>
+<body>
+
+<!-- ---------- top bar ---------- -->
+<nav class="topbar">
+  <span class="mark">Ms. Match</span>
+  <div class="topnav">
+    <a href="renaissance/#atelier">Atelier</a>
+    <a href="renaissance/#archive">Archive</a>
+    <a href="renaissance/#wardrobe">Wardrobe</a>
+  </div>
+  <span class="hero-date" id="today-label">—</span>
+</nav>
+
+<main class="app">
+
+  <!-- ---------- hero ---------- -->
+  <header class="hero">
+    <div class="hero-text reveal">
+      <span class="eyebrow">Galleria · No. 01 · outfit of the day</span>
+      <h1 class="brand-big">Ms. <em>Match</em></h1>
+      <p class="lede">The art of getting dressed. Your closet, today's sky and one portrait of you, composed into a look worth hanging on the wall.</p>
+      <a class="btn primary" href="renaissance/#atelier">Enter the atelier</a>
+    </div>
+    <!-- app.js still sets this photo, so it stays in the page, hidden -->
+    <figure class="portrait" id="hero-portrait" hidden>
+      <img src="assets/models/model-white.jpg" alt="">
+    </figure>
+  </header>
+
+  <!-- the moment before a match -->
+  <figure class="fresco reveal">
+    <div class="fresco-img" role="img" aria-label="Detail of Michelangelo's Creation of Adam: two hands almost touching"></div>
+    <figcaption>Michelangelo, <em>The Creation of Adam</em>, c. 1512 — the moment just before a match.</figcaption>
+  </figure>
+
+  <!-- ticker: app.js still fills it, this look keeps it hidden -->
+  <div class="ticker" aria-hidden="true" hidden><div class="ticker-track" id="ticker"></div></div>
+
+  <!-- ---------- main three columns ---------- -->
+  <section class="board" id="atelier">
+
+    <!-- weather -->
+    <aside class="col weather reveal">
+      <h2 class="title"><small>I · il cielo</small>The sky</h2>
+      <div class="day-toggle">
+        <button class="chip active" data-day="0">Today</button>
+        <button class="chip" data-day="1">Tomorrow</button>
+      </div>
+      <div class="w-icon" id="w-icon">·</div>
+      <div class="w-temp" id="w-temp">--°</div>
+      <div class="w-desc" id="w-desc">loading forecast…</div>
+      <div class="w-meta" id="w-meta"></div>
+      <div class="w-place" id="w-place">locating…</div>
+      <!-- Match me already follows the weather; app.js still binds this button, so it stays, hidden -->
+      <button class="btn wide" id="btn-suggest" hidden>Dress me for this weather</button>
+      <p class="hint" id="w-hint"></p>
+      <div class="pairings">
+        <span class="note">also works today</span>
+        <div class="pairings-grid" id="pairings"></div>
+      </div>
+    </aside>
+
+    <!-- the model -->
+    <section class="col stage-col reveal">
+      <div class="stage" id="stage">
+        <img class="model" id="model-img" src="" alt="the model photo the outfit is pinned around">
+        <div class="pin pin-top"    data-slot="top"></div>
+        <div class="pin pin-bottom" data-slot="bottom"></div>
+        <div class="pin pin-shoes"  data-slot="shoes"></div>
+        <div class="pin pin-extra"  data-slot="extra"></div>
+        <div class="scanline"></div>
+        <div class="scan-label">composing…</div>
+        <div class="match-label">Bellissima.</div>
+      </div>
+      <img class="putti" src="renaissance/art/putti.png" alt="">
+      <span class="putti-credit">putti after Raphael, <em>Sistine Madonna</em>, 1512</span>
+      <!-- app.js writes the outfit names here; the look column already shows them -->
+      <div class="caption" id="stage-caption" hidden>Choose pieces from the closet</div>
+      <span class="picker-title">Change model</span>
+      <div class="model-picker" id="model-picker"></div>
+    </section>
+
+    <!-- the look -->
+    <aside class="col look reveal">
+      <h2 class="title"><small>II · lo sguardo</small>The look</h2>
+      <div class="match-zone">
+        <button class="btn big" id="btn-match">Match me</button>
+        <span class="note">one gesture, one outfit</span>
+      </div>
+
+      <div class="slot" data-slot="top">
+        <button class="arrow" data-dir="-1" aria-label="previous top">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">top</div></div>
+        <button class="arrow" data-dir="1" aria-label="next top">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="bottom">
+        <button class="arrow" data-dir="-1" aria-label="previous bottom">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">bottom</div></div>
+        <button class="arrow" data-dir="1" aria-label="next bottom">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="shoes">
+        <button class="arrow" data-dir="-1" aria-label="previous shoes">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">shoes</div></div>
+        <button class="arrow" data-dir="1" aria-label="next shoes">›</button>
+        <div class="slot-name"></div>
+      </div>
+      <div class="slot" data-slot="extra">
+        <button class="arrow" data-dir="-1" aria-label="previous extra">‹</button>
+        <div class="slot-card"><img alt=""><div class="slot-empty">extra</div></div>
+        <button class="arrow" data-dir="1" aria-label="next extra">›</button>
+        <div class="slot-name"></div>
+      </div>
+
+      <div class="actions" id="actions" hidden>
+        <span class="note">love it?</span>
+        <button class="btn" id="btn-save">Save look</button>
+        <button class="btn primary" id="btn-wear">Wear it today</button>
+      </div>
+      <div class="style-note">
+        <span class="stamp" id="stamp">worn</span>
+        <span class="note-title">the stylist's note</span>
+        <p id="style-note">—</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ---------- intermezzo ---------- -->
+  <section class="band" id="archive">
+    <div class="band-copy reveal">
+      <span class="eyebrow">intermezzo</span>
+      <h2 class="band-text">Wear it.<br><em>Save it.</em><br>Repeat.</h2>
+      <p class="band-note">Five hundred years and she never repeated an outfit. Neither do you have to.</p>
+    </div>
+    <div class="band-hang reveal">
+      <figure><img src="renaissance/art/monalisa.jpg" alt="Leonardo da Vinci, Mona Lisa"><figcaption>Leonardo · 1503<br><em>same dress, every day</em></figcaption></figure>
+      <figure><img src="renaissance/art/pearl.jpg" alt="Vermeer, Girl with a Pearl Earring"><figcaption>Vermeer · 1665<br><em>one good accessory</em></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ---------- saved looks ---------- -->
+  <section class="strip">
+    <div class="strip-head">
+      <h2 class="title"><small>III · l'archivio</small>Saved looks</h2>
+      <button class="btn" id="btn-cal">Outfit calendar</button>
+      <button class="link" id="btn-clear-saved">clear all</button>
+    </div>
+    <div class="saved-list" id="saved-list"></div>
+  </section>
+
+  <!-- ---------- closet ---------- -->
+  <section class="closet" id="wardrobe">
+    <div class="strip-head">
+      <h2 class="title"><small>IV · il guardaroba</small>Closet</h2>
+      <div class="filters" id="filters">
+        <button class="chip active" data-cat="all">All</button>
+        <button class="chip" data-cat="top">Tops</button>
+        <button class="chip" data-cat="bottom">Bottoms</button>
+        <button class="chip" data-cat="shoes">Shoes</button>
+        <button class="chip" data-cat="extra">Extras</button>
+      </div>
+      <button class="link" id="btn-reset-demo">reset demo closet</button>
+    </div>
+
+    <div class="closet-grid" id="closet-grid"></div>
+
+    <form class="add-form" id="add-form">
+      <span class="form-title">Add a piece</span>
+      <input name="name" placeholder="name" maxlength="40" required aria-label="name of the piece">
+      <select name="cat" aria-label="category">
+        <option value="top">top</option>
+        <option value="bottom">bottom</option>
+        <option value="shoes">shoes</option>
+        <option value="extra">extra</option>
+      </select>
+      <select name="warmth" aria-label="warmth">
+        <option value="1">light</option>
+        <option value="2" selected>mid</option>
+        <option value="3">warm</option>
+      </select>
+      <label class="check"><input name="rain" type="checkbox"> rain ok</label>
+      <label class="check"><input name="full" type="checkbox"> dress (covers bottom)</label>
+      <label class="file">photo <input name="photo" type="file" accept="image/*" required></label>
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+  </section>
+
+  <!-- ---------- outfit calendar (modal) ---------- -->
+  <div class="modal" id="cal" hidden role="dialog" aria-modal="true" aria-labelledby="cal-title">
+    <div class="modal-card">
+      <button class="modal-close" id="cal-close" aria-label="close">×</button>
+      <div class="cal-head">
+        <button class="arrow" id="cal-prev" aria-label="previous month">‹</button>
+        <h2 class="title" id="cal-title">—</h2>
+        <button class="arrow" id="cal-next" aria-label="next month">›</button>
+      </div>
+      <div class="cal-week"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <p class="note cal-note">every day you press "wear it" is hung here</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span class="foot-mark">Ms. <em>Match</em></span>
+    <span id="status" role="status" aria-live="polite">ready</span>
+    <span>photos: Unsplash · paintings: public domain, Wikimedia Commons · weather: Open-Meteo · everything stays in your browser</span>
+  </footer>
+</main>
+
+<script src="js/closet.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Sections ease in as they scroll into view. Without IntersectionObserver
+  // everything is simply shown.
+  (function () {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.12 });
+    els.forEach(e => io.observe(e));
+  })();
+  // <base> points at the project root, so in-page links scroll here instead
+  // of following their href. The section's top lands right under the top bar.
+  document.querySelectorAll('a[href*="#"]').forEach(a => a.addEventListener('click', e => {
+    const target = document.getElementById(a.hash.slice(1));
+    if (!target) return;
+    e.preventDefault();
+    const bar = document.querySelector('.topbar').offsetHeight;
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - bar, behavior: 'smooth' });
+  }));
+</script>
+</body>
+</html>

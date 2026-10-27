@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="240" height="240" viewBox="0 0 240 240">
+  <!-- A carved gilt frame, used as a 9-slice border-image (slice 56).
+       Corner ornaments stay inside the 56px corner squares, and every
+       pattern on the edges repeats every 128px, so the edges tile cleanly. -->
+  <defs>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#F1E1B0"/>
+      <stop offset=".22" stop-color="#C9A45E"/>
+      <stop offset=".48" stop-color="#8E6A2E"/>
+      <stop offset=".7"  stop-color="#D9BC7A"/>
+      <stop offset="1"   stop-color="#6A4A1C"/>
+    </linearGradient>
+    <radialGradient id="boss" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#FFF7DC"/>
+      <stop offset=".45" stop-color="#C7A260"/>
+      <stop offset="1" stop-color="#7A5520"/>
+    </radialGradient>
+    <g id="corner">
+      <!-- acanthus volutes running along both edges -->
+      <g fill="none" stroke-linecap="round">
+        <path d="M54 9 C44 4 34 8 36 15 C37 20 44 20 44 15 C44 12 40 12 40 14" stroke="#5A3D14" stroke-width="2.2"/>
+        <path d="M54 9 C44 4 34 8 36 15 C37 20 44 20 44 15 C44 12 40 12 40 14" stroke="#FBE9B4" stroke-width="1" transform="translate(-.6 -.6)"/>
+        <path d="M9 54 C4 44 8 34 15 36 C20 37 20 44 15 44 C12 44 12 40 14 40" stroke="#5A3D14" stroke-width="2.2"/>
+        <path d="M9 54 C4 44 8 34 15 36 C20 37 20 44 15 44 C12 44 12 40 14 40" stroke="#FBE9B4" stroke-width="1" transform="translate(-.6 -.6)"/>
+      </g>
+      <path d="M47 22 C52 26 54 32 52 38 C48 34 45 29 47 22Z M22 47 C26 52 32 54 38 52 C34 48 29 45 22 47Z" fill="#D8BC7C" stroke="#6B4A1A" stroke-width=".9"/>
+      <!-- cartouche with a rosette -->
+      <g transform="translate(27 27) scale(1.22) translate(-27 -27)">
+      <circle cx="27" cy="27" r="17" fill="url(#leaf)" stroke="#5A3D14" stroke-width="1.2"/>
+      <circle cx="27" cy="27" r="14.5" fill="none" stroke="#FFF1C8" stroke-width=".8" opacity=".8"/>
+      <g fill="#E2C990" stroke="#7A5520" stroke-width=".8">
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(45 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(90 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(135 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(180 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(225 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(270 27 27)"/>
+        <ellipse cx="27" cy="17.5" rx="3.6" ry="7" transform="rotate(315 27 27)"/>
+      </g>
+      <circle cx="27" cy="27" r="5" fill="url(#boss)" stroke="#5A3D14" stroke-width="1"/>
+      </g>
+    </g>
+  </defs>
+
+  <!-- the gilt body -->
+  <path d="M0 0H240V240H0Z M56 56V184H184V56Z" fill="#B08C4C" fill-rule="evenodd"/>
+
+  <!-- outer mouldings -->
+  <g fill="none">
+    <rect x="1" y="1" width="238" height="238" stroke="#4E3410" stroke-width="2"/>
+    <rect x="4" y="4" width="232" height="232" stroke="#F6E8C2" stroke-width="1.5" opacity=".85"/>
+    <rect x="7.5" y="7.5" width="225" height="225" stroke="#86601F" stroke-width="3"/>
+    <rect x="11" y="11" width="218" height="218" stroke="#E3CB8E" stroke-width="2"/>
+
+    <!-- pearl beading: 16 beads per 128px -->
+    <rect x="16" y="16" width="208" height="208" stroke="#5A3D14" stroke-width="5.4" stroke-dasharray="0 8" stroke-linecap="round" transform="translate(.7 .9)" opacity=".7"/>
+    <rect x="16" y="16" width="208" height="208" stroke="#EAD7A0" stroke-width="5" stroke-dasharray="0 8" stroke-linecap="round"/>
+    <rect x="21" y="21" width="198" height="198" stroke="#6A4A1C" stroke-width="1.5"/>
+
+    <!-- the cove, carved with egg-and-dart: 10 eggs per 128px -->
+    <rect x="31" y="31" width="178" height="178" stroke="#9A7636" stroke-width="18"/>
+    <rect x="31" y="31" width="178" height="178" stroke="#4E3410" stroke-width="9" stroke-dasharray="3 9.8" stroke-linecap="round" transform="translate(.8 1)" opacity=".75"/>
+    <rect x="31" y="31" width="178" height="178" stroke="#D4B470" stroke-width="8.4" stroke-dasharray="3 9.8" stroke-linecap="round"/>
+    <rect x="31" y="31" width="178" height="178" stroke="#FFF6D8" stroke-width="2.4" stroke-dasharray="1.5 11.3" stroke-dashoffset="-.6" stroke-linecap="round" opacity=".8"/>
+
+    <!-- inner mouldings and the sight edge -->
+    <rect x="41" y="41" width="158" height="158" stroke="#FFF0C4" stroke-width="1.5"/>
+    <rect x="44" y="44" width="152" height="152" stroke="#86601F" stroke-width="3"/>
+    <rect x="48" y="48" width="144" height="144" stroke="#E6D09A" stroke-width="2.6"/>
+    <rect x="51.5" y="51.5" width="137" height="137" stroke="#5A3D14" stroke-width="2"/>
+    <rect x="55" y="55" width="130" height="130" stroke="#2A1C08" stroke-width="2"/>
+  </g>
+
+  <!-- the four corners, mirrored -->
+  <use xlink:href="#corner" href="#corner"/>
+  <use xlink:href="#corner" href="#corner" transform="translate(240 0) scale(-1 1)"/>
+  <use xlink:href="#corner" href="#corner" transform="translate(0 240) scale(1 -1)"/>
+  <use xlink:href="#corner" href="#corner" transform="translate(240 240) scale(-1 -1)"/>
+</svg>

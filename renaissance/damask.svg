@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160">
+  <!-- one tile of a tone-on-tone damask wall: an ogee lattice with a
+       palmette in each cell. Repeats seamlessly. -->
+  <g fill="none" stroke="#6F5B47" stroke-opacity=".1" stroke-width="1.2">
+    <path d="M60 0 C90 20 90 60 60 80 C30 100 30 140 60 160"/>
+    <path d="M60 0 C30 20 30 60 60 80 C90 100 90 140 60 160"/>
+    <path d="M0 80 C30 100 30 140 0 160 M120 80 C90 100 90 140 120 160 M0 0 C30 20 30 60 0 80 M120 0 C90 20 90 60 120 80"/>
+  </g>
+  <g fill="#6F5B47" fill-opacity=".07">
+    <path d="M60 22 C68 32 70 44 60 58 C50 44 52 32 60 22Z"/>
+    <path d="M60 58 C52 50 42 50 38 56 C46 56 54 58 60 58Z M60 58 C68 50 78 50 82 56 C74 56 66 58 60 58Z"/>
+    <circle cx="60" cy="62" r="2.4"/>
+    <path d="M0 102 C8 112 10 124 0 138 C-10 124 -8 112 0 102Z M120 102 C128 112 130 124 120 138 C110 124 112 112 120 102Z"/>
+    <path d="M0 138 C8 130 18 130 22 136 C14 136 6 138 0 138Z M120 138 C112 130 102 130 98 136 C106 136 114 138 120 138Z"/>
+  </g>
+</svg>
