@@ -60,3 +60,5 @@
 2026-10-27 - Renaissance page: the "Dress me for this weather" button is hidden, so Match me is the only button that picks an outfit (it already follows the weather since review 8); the button stays in the HTML because app.js binds it - decided by Inez
 2026-10-27 - Renaissance page: the outfit names under the framed model are hidden (the look column already lists them) and the model thumbnails get a "Change model" label instead - decided by Inez
 2026-10-29 - Renaissance page: on desktop screens the atelier fits one screen under the top bar (painting sized to the screen height, sky and look columns tightened); the putti, model picker and stylist's note sit just below the fold - asked by Inez, sizes chosen by Claude
+2026-10-29 - Renaissance page: "also works today" flicks through the closet while Match me spins - asked by Inez
+2026-10-29 - Renaissance page: the stylist's note becomes a linen card in a double gilt rule with a medallion, and a matching "daily muse" card under the sky column shows one fashion quote a day from a list of 10 (Chanel, Armani, Westwood...) - asked by Inez, design and quotes chosen by Claude

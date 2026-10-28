@@ -71,6 +71,12 @@
         <span class="note">also works today</span>
         <div class="pairings-grid" id="pairings"></div>
       </div>
+      <!-- the daily muse: one fashion quote a day, picked by the script below -->
+      <figure class="muse">
+        <span class="note-title">the daily muse</span>
+        <blockquote id="muse-quote">Simplicity is the keynote of all true elegance.</blockquote>
+        <figcaption id="muse-author">Coco Chanel</figcaption>
+      </figure>
     </aside>
 
     <!-- the model -->
@@ -233,6 +239,47 @@
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { threshold: 0.12 });
     els.forEach(e => io.observe(e));
+  })();
+  // The daily muse: the same quote all day, a new one tomorrow.
+  (function () {
+    const quotes = [
+      ['Simplicity is the keynote of all true elegance.', 'Coco Chanel'],
+      ['Elegance is not standing out, but being remembered.', 'Giorgio Armani'],
+      ['Buy less, choose well, make it last.', 'Vivienne Westwood'],
+      ['Fashion fades, only style remains the same.', 'Coco Chanel'],
+      ['When in doubt, wear red.', 'Bill Blass'],
+      ['Fashion is the armor to survive the reality of everyday life.', 'Bill Cunningham'],
+      ['Before you leave the house, look in the mirror and take one thing off.', 'Coco Chanel'],
+      ['I don’t design clothes, I design dreams.', 'Ralph Lauren'],
+      ['In order to be irreplaceable one must always be different.', 'Coco Chanel'],
+      ['Style is a way to say who you are without having to speak.', 'Rachel Zoe'],
+    ];
+    const now = new Date();
+    const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+    const [text, who] = quotes[day % quotes.length];
+    document.getElementById('muse-quote').textContent = text;
+    document.getElementById('muse-author').textContent = who;
+  })();
+  // While Match me spins, "also works today" flicks through the closet too.
+  // app.js redraws the pairings once the outfit lands, which ends the shuffle.
+  (function () {
+    const stage = document.getElementById('stage');
+    const box = document.getElementById('pairings');
+    let timer = null;
+    const stop = () => { clearTimeout(timer); timer = null; box.parentElement.classList.remove('shuffling'); };
+    new MutationObserver(() => {
+      if (!stage.classList.contains('spin') || timer) return;
+      const pics = [...document.querySelectorAll('#closet-grid img')].map(i => i.src);
+      if (!pics.length) return;
+      box.parentElement.classList.add('shuffling');
+      let i = 0;
+      const tick = () => {
+        box.querySelectorAll('img').forEach(img => { img.src = pics[Math.floor(Math.random() * pics.length)]; });
+        timer = setTimeout(tick, 70 + i++ * 22);     // slows down like the pins do
+      };
+      tick();
+    }).observe(stage, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(stop).observe(box, { childList: true });
   })();
   // <base> points at the project root, so in-page links scroll here instead
   // of following their href. The section's top lands right under the top bar.

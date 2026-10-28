@@ -416,14 +416,40 @@ body { overflow-x: clip; }
 }
 @keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(180,143,85,0); } 50% { box-shadow: 0 0 0 6px rgba(180,143,85,.35); } }
 
-/* stylist's note: a letter on parchment, with a wax seal when worn */
-.style-note {
-  position: relative; margin-top: 30px; padding: 22px 22px 20px;
-  background: var(--parchment);
-  border-left: 2px solid var(--gold);
+/* stylist's note and the daily muse: a little card on linen inside a double
+   gilt rule, its title between two gold flourishes. The note gets a wax seal when worn. */
+.style-note, .muse {
+  position: relative; margin: 34px 0 0; padding: 28px 24px 24px;
+  text-align: center;
+  background: var(--linen);
+  border: 1px solid var(--gold);
+  box-shadow: inset 0 0 0 5px var(--linen), inset 0 0 0 6px rgba(180,143,85,.55),
+              0 22px 40px -26px rgba(42,33,26,.55);
 }
-.style-note .note-title { display: block; font: 400 10px/1 var(--caps); letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
-.style-note p { margin: 0; font: italic 400 19px/1.35 var(--serif); color: var(--umber); }
+.style-note .note-title, .muse .note-title {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font: 400 10px/1 var(--caps); letter-spacing: .3em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 14px;
+}
+.style-note .note-title::before, .style-note .note-title::after,
+.muse .note-title::before, .muse .note-title::after {
+  content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold));
+}
+.style-note .note-title::after, .muse .note-title::after { transform: scaleX(-1); }
+.style-note p { margin: 0; font: italic 400 21px/1.35 var(--serif); color: var(--umber); }
+.muse blockquote { margin: 0; font: italic 400 21px/1.35 var(--serif); color: var(--umber); }
+.muse blockquote::before { content: "“"; display: block; font: 400 46px/.6 var(--serif); color: var(--gold); margin-bottom: 6px; }
+.muse figcaption { margin-top: 14px; font: 400 10px/1 var(--caps); letter-spacing: .26em; text-transform: uppercase; color: var(--sepia); }
+.muse .note-title { white-space: nowrap; gap: 7px; letter-spacing: .22em; }
+.muse .note-title::before, .muse .note-title::after { width: 16px; }
+.style-note::after, .muse::after {                       /* a small gilt medallion on the bottom rule */
+  content: "❦"; position: absolute; left: 50%; bottom: -12px; transform: translateX(-50%);
+  width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--linen); border: 1px solid var(--gold); color: var(--gold); font-size: 12px; line-height: 1;
+}
+
+/* "also works today" flicks through the closet while Match me spins */
+.pairings.shuffling img { filter: sepia(.55) brightness(.9); transform: scale(.96); transition: none; }
 .stamp {
   position: absolute; right: -12px; top: -18px;
   width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%;
