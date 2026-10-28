@@ -136,10 +136,9 @@
     <!-- two letters under the columns, just below the first screen -->
     <!-- the daily muse: one fashion quote a day, picked by the script below -->
     <figure class="letter muse reveal">
-      <span class="letter-eyebrow">la musa</span>
-      <span class="letter-title">Daily muse</span>
+      <span class="letter-eyebrow">la musa del giorno</span>
+      <figcaption class="letter-title" id="muse-author">Coco Chanel</figcaption>
       <blockquote id="muse-quote">Simplicity is the keynote of all true elegance.</blockquote>
-      <figcaption id="muse-author">Coco Chanel</figcaption>
     </figure>
     <div class="letter style-note reveal">
       <span class="stamp" id="stamp">worn</span>
@@ -244,7 +243,8 @@
     }), { threshold: 0.12 });
     els.forEach(e => io.observe(e));
   })();
-  // The daily muse: the same quote all day, a new one tomorrow.
+  // The daily muse: the same quote all day, a new one tomorrow. Only short
+  // quotes, so each one fits two lines in the narrow column.
   (function () {
     const quotes = [
       ['Simplicity is the keynote of all true elegance.', 'Coco Chanel'],
@@ -252,11 +252,7 @@
       ['Buy less, choose well, make it last.', 'Vivienne Westwood'],
       ['Fashion fades, only style remains the same.', 'Coco Chanel'],
       ['When in doubt, wear red.', 'Bill Blass'],
-      ['Fashion is the armor to survive the reality of everyday life.', 'Bill Cunningham'],
-      ['Before you leave the house, look in the mirror and take one thing off.', 'Coco Chanel'],
       ['I don’t design clothes, I design dreams.', 'Ralph Lauren'],
-      ['In order to be irreplaceable one must always be different.', 'Coco Chanel'],
-      ['Style is a way to say who you are without having to speak.', 'Rachel Zoe'],
     ];
     const now = new Date();
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
