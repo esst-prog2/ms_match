@@ -375,6 +375,20 @@ body { overflow-x: clip; }
   font: 400 10px/1 var(--caps); letter-spacing: .3em; text-transform: uppercase; color: var(--sepia); opacity: .6;
 }
 .slot-card.on .slot-empty { display: none; }
+/* ↻ on a filled slot: spin only this piece again */
+.respin {
+  position: absolute; left: 6px; top: 6px; z-index: 1;
+  width: 28px; height: 28px; display: none; place-items: center; border-radius: 50%;
+  font: 400 15px/1 var(--serif); color: var(--umber); cursor: pointer;
+  background: rgba(246,241,231,.92); border: 1px solid var(--gold);
+  box-shadow: 0 4px 10px -4px rgba(42,33,26,.5);
+  transition: transform .5s var(--ease), background .3s var(--ease);
+}
+.slot-card.on .respin { display: grid; }
+.respin:hover { transform: rotate(180deg); background: var(--gold-hi); }
+.slot.dim .respin { display: none; }
+.pin.on { cursor: pointer; }
+.pin.respinning img { filter: sepia(.55) brightness(.9); }
 .slot .arrow { font: 300 26px/1 var(--serif); color: var(--sepia); background: none; border: 0; cursor: pointer; transition: color .3s var(--ease); }
 .slot .arrow:hover { color: var(--umber); }
 .slot-name { grid-area: name; text-align: center; font: italic 400 15px var(--serif); color: var(--sepia); min-height: 16px; margin-top: 6px; }

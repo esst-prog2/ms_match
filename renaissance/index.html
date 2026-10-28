@@ -103,25 +103,25 @@
 
       <div class="slot" data-slot="top">
         <button class="arrow" data-dir="-1" aria-label="previous top">‹</button>
-        <div class="slot-card"><img alt=""><div class="slot-empty">top</div></div>
+        <div class="slot-card"><img alt=""><div class="slot-empty">top</div><button class="respin" data-slot="top" aria-label="spin a new top" title="spin a new top">↻</button></div>
         <button class="arrow" data-dir="1" aria-label="next top">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="bottom">
         <button class="arrow" data-dir="-1" aria-label="previous bottom">‹</button>
-        <div class="slot-card"><img alt=""><div class="slot-empty">bottom</div></div>
+        <div class="slot-card"><img alt=""><div class="slot-empty">bottom</div><button class="respin" data-slot="bottom" aria-label="spin a new bottom" title="spin a new bottom">↻</button></div>
         <button class="arrow" data-dir="1" aria-label="next bottom">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="shoes">
         <button class="arrow" data-dir="-1" aria-label="previous shoes">‹</button>
-        <div class="slot-card"><img alt=""><div class="slot-empty">shoes</div></div>
+        <div class="slot-card"><img alt=""><div class="slot-empty">shoes</div><button class="respin" data-slot="shoes" aria-label="spin new shoes" title="spin new shoes">↻</button></div>
         <button class="arrow" data-dir="1" aria-label="next shoes">›</button>
         <div class="slot-name"></div>
       </div>
       <div class="slot" data-slot="extra">
         <button class="arrow" data-dir="-1" aria-label="previous extra">‹</button>
-        <div class="slot-card"><img alt=""><div class="slot-empty">extra</div></div>
+        <div class="slot-card"><img alt=""><div class="slot-empty">extra</div><button class="respin" data-slot="extra" aria-label="spin a new extra piece" title="spin a new extra piece">↻</button></div>
         <button class="arrow" data-dir="1" aria-label="next extra">›</button>
         <div class="slot-name"></div>
       </div>
@@ -281,6 +281,62 @@
       tick();
     }).observe(stage, { attributes: true, attributeFilter: ['class'] });
     new MutationObserver(stop).observe(box, { childList: true });
+  })();
+  // Re-spin one piece: the ↻ on a slot (or a click on its framed study) flicks
+  // only that piece and lands on the best other one for the day, the way
+  // "Dress me for this weather" picks: closest warmth, rain-proof when it rains.
+  // A piece spun away stays out of that slot until the next full Match me,
+  // so one in the laundry doesn't come straight back. Uses app.js's globals.
+  (function () {
+    const away = { top: [], bottom: [], shoes: [], extra: [] };
+    let busy = false;
+
+    function best(slot) {
+      const day = weather.days && weather.days[weather.day];
+      const { need, rainy } = day ? dayRule(day) : { need: 2, rainy: false };
+      let items = itemsIn(slot).filter(i => i.id !== current[slot]);
+      if (rainy && items.some(i => i.rain)) items = items.filter(i => i.rain);
+      if (items.some(i => !away[slot].includes(i.id))) items = items.filter(i => !away[slot].includes(i.id));
+      else away[slot] = [];                              // everything was spun away once: start over
+      if (!items.length) return null;
+      return items.map(i => ({ i, s: Math.abs(i.warmth - need) + Math.random() * 0.7 }))
+                  .sort((a, b) => a.s - b.s)[0].i;
+    }
+
+    async function respin(slot) {
+      if (busy || spinning || !current[slot]) return;
+      if (slot === 'bottom' && wearsDress()) return;     // a dress covers the bottom
+      const next = best(slot);
+      if (!next) { setStatus(`no other ${slot} in the closet`); return; }
+      busy = true;
+      away[slot].push(current[slot]);
+      const pin = document.querySelector(`.pin[data-slot="${slot}"]`);
+      const pool = itemsIn(slot);
+      pin.classList.add('respinning');
+      for (let i = 0; i < 9; i++) {
+        current[slot] = pick(pool).id;
+        drawStage();
+        await sleep(60 + i * 26);                        // slows down like Match me
+      }
+      current[slot] = next.id;
+      if (slot === 'top' && next.full) current.bottom = null;
+      else if (slot === 'top' && !current.bottom) current.bottom = best('bottom')?.id || null;
+      pin.classList.remove('respinning');
+      refresh(true);
+      setStatus(`new ${slot}: ${next.name}`);
+      busy = false;
+    }
+
+    document.querySelectorAll('.respin').forEach(b =>
+      b.addEventListener('click', e => { e.stopPropagation(); respin(b.dataset.slot); }));
+    document.getElementById('stage').addEventListener('click', e => {
+      const pin = e.target.closest('.pin.on');
+      if (pin) respin(pin.dataset.slot);
+    });
+    // a fresh Match me forgets what was spun away
+    document.getElementById('btn-match').addEventListener('click', () => {
+      Object.keys(away).forEach(k => { away[k] = []; });
+    });
   })();
   // <base> points at the project root, so in-page links scroll here instead
   // of following their href. The section's top lands right under the top bar.
