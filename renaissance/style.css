@@ -429,6 +429,8 @@ body { overflow-x: clip; }
 .letter-eyebrow { display: block; font: 400 11px/1 var(--caps); letter-spacing: .32em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
 .letter-title { display: block; margin: 12px 0 12px; font: 300 34px/1 var(--serif); color: var(--umber); white-space: nowrap; }
 .letter p, .letter blockquote { margin: 0; font: italic 400 19px/1.35 var(--serif); color: var(--oxblood); }
+.letter-by { margin-top: 8px; font: 400 10px/1 var(--caps); letter-spacing: .26em; text-transform: uppercase; color: var(--sepia); }
+.letter-by::before { content: "— "; }
 
 /* "also works today" flicks through the closet while Match me spins */
 .pairings.shuffling img { filter: sepia(.55) brightness(.9); transform: scale(.96); transition: none; }
