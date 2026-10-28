@@ -384,6 +384,36 @@ body { overflow-x: clip; }
 .actions .btn { padding: 14px 6px; font-size: 10px; letter-spacing: .18em; }
 .actions.pulse .btn.primary { animation: glow 1.6s ease-in-out 2; }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* On a desktop screen the atelier fits one screen under the top bar: the
+   painting takes the screen's height, the two side columns tighten to match.
+   The putti, the model picker and the stylist's note sit just below the fold. */
+@media (min-width: 961px) and (min-height: 600px) {
+  .board { padding: 26px 0 70px; --fit: calc(100svh - 64px - 26px - 22px); }
+  .board .title { font-size: 34px; margin-bottom: 14px; }
+  .board .title small { margin-bottom: 8px; }
+
+  .stage { width: auto; height: var(--fit); max-height: 760px; max-width: 100%; border-width: 32px; }
+
+  .w-icon { font-size: 30px; margin: 14px 0 2px; }
+  .w-temp { font-size: 64px; }
+  .w-desc { font-size: 20px; margin-top: 2px; }
+  .w-meta { margin-top: 6px; line-height: 1.55; }
+  .w-place { margin: 12px 0 10px; padding-top: 10px; }
+  .hint { font-size: 16px; margin-top: 8px; }
+  .pairings { margin-top: 14px; padding-top: 12px; }
+  .pairings .note { margin-bottom: 8px; }
+  .pairings-grid { gap: 6px; }
+  .pairings-grid img { aspect-ratio: 1 / 1; }
+
+  .match-zone { gap: 6px; margin-bottom: 14px; }
+  .btn.big { padding: 17px 24px; }
+  .slot { margin-bottom: 6px; }
+  .slot-card { height: clamp(52px, calc((100svh - 470px) / 4), 96px); }
+  .slot-name { font-size: 14px; margin-top: 2px; }
+  .actions { margin-top: 4px; }
+  .actions .btn { padding: 12px 6px; }
+}
 @keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(180,143,85,0); } 50% { box-shadow: 0 0 0 6px rgba(180,143,85,.35); } }
 
 /* stylist's note: a letter on parchment, with a wax seal when worn */
