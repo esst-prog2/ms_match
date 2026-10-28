@@ -389,7 +389,7 @@ body { overflow-x: clip; }
    painting takes the screen's height, the two side columns tighten to match.
    The putti, the model picker and the stylist's note sit just below the fold. */
 @media (min-width: 961px) and (min-height: 600px) {
-  .board { padding: 26px 0 70px; --fit: calc(100svh - 64px - 26px - 22px); }
+  .board { padding: 26px 0 70px; --fit: calc(100svh - 64px - 26px - 22px); grid-template-rows: minmax(var(--fit), auto) auto; }
   .board .title { font-size: 34px; margin-bottom: 14px; }
   .board .title small { margin-bottom: 8px; }
 
@@ -416,37 +416,34 @@ body { overflow-x: clip; }
 }
 @keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(180,143,85,0); } 50% { box-shadow: 0 0 0 6px rgba(180,143,85,.35); } }
 
-/* stylist's note and the daily muse: a little card on linen inside a double
-   gilt rule, its title between two gold flourishes. The note gets a wax seal when worn. */
-.style-note, .muse {
-  position: relative; margin: 34px 0 0; padding: 28px 24px 24px;
-  text-align: center;
-  background: var(--linen);
-  border: 1px solid var(--gold);
-  box-shadow: inset 0 0 0 5px var(--linen), inset 0 0 0 6px rgba(180,143,85,.55),
-              0 22px 40px -26px rgba(42,33,26,.55);
+/* the two letters under the columns (the daily muse, the stylist's note):
+   aged paper in the same carved gilt frame as the paintings, a heading like the
+   columns' and an illuminated initial. The note gets a wax seal when worn. */
+@media (min-width: 961px) {
+  .board > .weather, .board > .look { grid-row: 1; }
+  .board > .stage-col  { grid-row: 1 / span 2; }
+  .board > .muse       { grid-column: 1; grid-row: 2; }
+  .board > .style-note { grid-column: 3; grid-row: 2; }
 }
-.style-note .note-title, .muse .note-title {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  font: 400 10px/1 var(--caps); letter-spacing: .3em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: 14px;
+.letter {
+  position: relative; margin: 0; padding: 22px 20px 22px;
+  border: 16px solid transparent;
+  border-image: url("frame.svg") 56 round;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255,250,238,.9), rgba(246,241,231,0) 75%) padding-box,
+    radial-gradient(ellipse at 50% 50%, var(--linen) 55%, #E3D3B6 100%) padding-box;
+  box-shadow: 0 24px 40px -24px rgba(42,33,26,.6);
 }
-.style-note .note-title::before, .style-note .note-title::after,
-.muse .note-title::before, .muse .note-title::after {
-  content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold));
+.letter-eyebrow { display: block; font: 400 10px/1 var(--caps); letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.letter-title { display: block; margin: 8px 0 14px; padding-bottom: 12px; font: 300 27px/1 var(--serif); white-space: nowrap; color: var(--umber); border-bottom: 1px solid var(--hair); }
+.letter p, .letter blockquote { margin: 0; font: italic 400 20px/1.4 var(--serif); color: var(--umber); }
+.letter p::first-letter, .letter blockquote::first-letter {   /* illuminated initial */
+  float: left; margin: 6px 8px 0 0;
+  font: normal 400 50px/.8 var(--caps); color: var(--oxblood);
+  text-shadow: 1px 1px 0 var(--gold-hi);
 }
-.style-note .note-title::after, .muse .note-title::after { transform: scaleX(-1); }
-.style-note p { margin: 0; font: italic 400 21px/1.35 var(--serif); color: var(--umber); }
-.muse blockquote { margin: 0; font: italic 400 21px/1.35 var(--serif); color: var(--umber); }
-.muse blockquote::before { content: "“"; display: block; font: 400 46px/.6 var(--serif); color: var(--gold); margin-bottom: 6px; }
-.muse figcaption { margin-top: 14px; font: 400 10px/1 var(--caps); letter-spacing: .26em; text-transform: uppercase; color: var(--sepia); }
-.muse .note-title { white-space: nowrap; gap: 7px; letter-spacing: .22em; }
-.muse .note-title::before, .muse .note-title::after { width: 16px; }
-.style-note::after, .muse::after {                       /* a small gilt medallion on the bottom rule */
-  content: "❦"; position: absolute; left: 50%; bottom: -12px; transform: translateX(-50%);
-  width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%;
-  background: var(--linen); border: 1px solid var(--gold); color: var(--gold); font-size: 12px; line-height: 1;
-}
+.muse figcaption { margin-top: 14px; text-align: right; font: italic 400 16px/1 var(--serif); color: var(--sepia); }
+.muse figcaption::before { content: "— "; }
 
 /* "also works today" flicks through the closet while Match me spins */
 .pairings.shuffling img { filter: sepia(.55) brightness(.9); transform: scale(.96); transition: none; }
