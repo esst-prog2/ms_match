@@ -68,7 +68,7 @@ test('a file that cannot be read as a photo is reported and adds nothing', async
   const ctx = startApp();
   run(ctx, `shrink = async () => { throw new Error('not an image') }`);
   await ctx.addItem({ photo: { size: 1 }, name: 'notes', cat: 'top', warmth: '1', rain: null, full: null, reset() {} });
-  assert.equal(run(ctx, 'closet.length'), 21);
+  assert.equal(run(ctx, 'closet.length'), 20);
   assert.equal(el(ctx, '#status').textContent, 'that file could not be read as a photo');
 });
 
