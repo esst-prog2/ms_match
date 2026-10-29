@@ -8,7 +8,11 @@ A small web app I am building for myself. My clothes live in it as photos, it re
 
 ## 1. The demo
 
-I open the app in the browser and the page asks for my location. I allow it, and the forecast panel shows today: 14°, light rain, rain 70%. The model on the page is a full-body photo of me that I uploaded once. I click **Match me**. The closet flicks through pieces for a few seconds, slows down, a handwritten "match!" pops up, and four polaroids settle around me: the brown knit sweater and the bag above, the black jeans and the boots below, each one a photo I took myself, pinned up at a slight angle with its name written underneath. I can see myself in the middle and the outfit around me. The "love it?" row appears. I click **Wear it today**, and the status bar says `wearing it today · 2026-11-30 saved to the calendar`. I open **Outfit calendar**: November shows the days I pressed "wear it", each with a small picture of that outfit, and clicking one puts it back on screen. I close the browser, reopen the app, and the closet, the saved looks and the calendar are still there.
+I open `renaissance/index.html`, click **Atelier**, and the whole atelier fits one screen: the forecast for Budapest on the left (16°, overcast, rain 6%), my model in the middle — Botticelli's Flora, one of the five painted women I can choose under **Change model**, in a carved gold frame — and **Match me** on the right. I click **Match me**: the four framed pieces around her and the six "also works today" pieces flick through my closet and slow down, *Bellissima.* appears over the painting, and the look settles — denim shirt, blue jeans, black boots and the brown leather bag, each in its own small gold frame with its name below. The boots are in the laundry, so I press the ↻ on their card and only the shoes spin again, landing on the white sneakers, the pair that fits a 16° day. Below the painting, the daily muse shows today's fashion quote with its author, and the stylist's note says "Mild day. denim shirt + one warm piece, and you're set." I click **Wear it today**, the status bar says `wearing it today · 2026-11-30 saved to the calendar`, **Outfit calendar** shows that day with a small picture of the look, and when I close and reopen the browser, the closet, the saved looks and the calendar are still there.
+
+### Why a second look
+
+The first look, with its polaroids, worked but never felt like mine. I love painting and an elegant, gallery-like style, and a page I like looking at is a page I keep opening every morning, so I gave Ms. Match a completely new appearance in `renaissance/`: painted women as models, gold frames instead of polaroids, and paintings on the walls. It runs the same closet, forecast and calendar as the original page, which stays as it was. The daily muse and the stylist's note are there so that every day brings something new to read, not only a new outfit.
 
 ## 2. The shape
 
@@ -30,8 +34,9 @@ The first useful version does:
 - one photo of me as the model, and my closet as photos with category, warmth and rain flag
 - forecast for my location and an outfit suggestion by warmth and rain
 - "Match me" random outfit, plus manual picking
-- show each chosen piece as a polaroid pinned around my photo, named, with the model left clear in the middle
+- show each chosen piece around the model, named, with the model left clear in the middle: as a pinned polaroid on the original page, as a small gold-framed study on the renaissance page
 - save looks, "wear it today", and a monthly calendar
+- the renaissance look in `renaissance/`: five painted women as models, re-spinning a single piece to the next one that fits the weather, "also works today" spinning with Match me, a daily fashion quote and the stylist's note
 
 Explicitly not this term:
 
@@ -44,8 +49,8 @@ Explicitly not this term:
 
 - Given rain probability of 50% or more, the suggested shoes are marked *rain ok* whenever such a pair exists.
 - Given a dress is chosen, the bottom slot is emptied and no bottom card is shown.
-- Given four pieces are chosen, four polaroids appear around the model and none of them covers the middle of the photo.
-- Given a piece is displayed, its card shows the piece's name below the photo and a pin above it.
+- Given four pieces are chosen, four polaroids (gold frames on the renaissance page) appear around the model and none of them covers the middle of the photo.
+- Given a piece is displayed, its card shows the piece's name below the photo, with a pin above it on the original page and inside a gold frame on the renaissance page.
 - Given the browser refuses to store a new piece, the app says so and the closet after a reload holds exactly what it held before.
 - Given a look is worn on day X and the page is reloaded, the calendar still shows it on day X.
 
@@ -62,6 +67,8 @@ What I could not fill in: whether a board of four polaroids is enough to decide 
 ## Running it
 
 Open `index.html` in Chrome. Nothing needs to be installed.
+
+The renaissance look: run `python -m http.server 8000` in the project folder and open http://localhost:8000/renaissance/index.html. It shares the closet, saved looks and calendar with the original page.
 
 Tests: `node --test` in the project folder (Node 22, no packages). They load the real `js/closet.js` and `js/app.js` with a stub page and a fake `localStorage`.
 

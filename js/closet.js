@@ -26,7 +26,6 @@ const DEMO_CLOSET = [
   { id: 'd06', name: 'cream knit sweater', cat: 'top',    img: 'assets/clothes/sweater-white.jpg',  warmth: 3, rain: false },
   { id: 'd07', name: 'leather jacket',     cat: 'top',    img: 'assets/clothes/jacket-leather.jpg', warmth: 3, rain: true },
   { id: 'd08', name: 'lace dress',         cat: 'top',    img: 'assets/clothes/dress-floral.jpg',   warmth: 1, rain: false, full: true },
-  { id: 'd09', name: 'green playsuit',     cat: 'top',    img: 'assets/clothes/dress-green.jpg',    warmth: 1, rain: false, full: true },
   // bottoms
   { id: 'd10', name: 'black jeans',        cat: 'bottom', img: 'assets/clothes/jeans-black.jpg',    warmth: 3, rain: true },
   { id: 'd11', name: 'blue jeans',         cat: 'bottom', img: 'assets/clothes/jeans-blue.jpg',     warmth: 2, rain: true },

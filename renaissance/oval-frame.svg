@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="420" viewBox="0 0 300 420">
+  <!-- An oval carved gilt frame with a shell crest on top and a leaf knot
+       below. The opening is the ellipse cx 150, cy 215, rx 105, ry 148;
+       style.css places the portrait photo exactly there. -->
+  <defs>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#F1E1B0"/>
+      <stop offset=".22" stop-color="#C9A45E"/>
+      <stop offset=".48" stop-color="#8E6A2E"/>
+      <stop offset=".7"  stop-color="#D9BC7A"/>
+      <stop offset="1"   stop-color="#6A4A1C"/>
+    </linearGradient>
+    <linearGradient id="cove" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6A4A1C"/>
+      <stop offset=".5" stop-color="#C9A45E"/>
+      <stop offset="1" stop-color="#F1E1B0"/>
+    </linearGradient>
+    <radialGradient id="boss" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#FFF7DC"/>
+      <stop offset=".45" stop-color="#C7A260"/>
+      <stop offset="1" stop-color="#7A5520"/>
+    </radialGradient>
+    <g id="volute" fill="none" stroke-linecap="round">
+      <path d="M150 40 C126 30 98 34 92 50 C88 62 104 66 108 56 C110 50 104 48 102 52" stroke="#5A3D14" stroke-width="3"/>
+      <path d="M150 40 C126 30 98 34 92 50 C88 62 104 66 108 56 C110 50 104 48 102 52" stroke="#FBE9B4" stroke-width="1.3" transform="translate(-.8 -.8)"/>
+      <path d="M118 44 C108 46 104 54 110 60" stroke="#6B4A1A" stroke-width="1.2"/>
+    </g>
+    <g id="sideleaf">
+      <path d="M21 203 C17 209 17 221 21 227 C25 221 25 209 21 203Z" fill="url(#leaf)" stroke="#5A3D14" stroke-width=".9"/>
+      <circle cx="21" cy="215" r="4.5" fill="url(#boss)" stroke="#5A3D14" stroke-width=".9"/>
+    </g>
+  </defs>
+
+  <!-- gilt body of the ring -->
+  <path d="M150 40 A130 175 0 1 0 150.01 40Z M150 67 A105 148 0 1 1 149.99 67Z" fill="url(#leaf)" fill-rule="evenodd"/>
+  <g fill="none">
+    <ellipse cx="150" cy="215" rx="130" ry="175" stroke="#4E3410" stroke-width="2.4"/>
+    <ellipse cx="150" cy="215" rx="127" ry="172" stroke="#F6E8C2" stroke-width="1.5" opacity=".85"/>
+    <ellipse cx="150" cy="215" rx="123.5" ry="168.5" stroke="#86601F" stroke-width="3"/>
+    <!-- pearl beading -->
+    <ellipse cx="150" cy="215" rx="118" ry="163" stroke="#5A3D14" stroke-width="3.2" stroke-dasharray="0 2.25" stroke-linecap="round" pathLength="360" transform="translate(.7 .9)" opacity=".7"/>
+    <ellipse cx="150" cy="215" rx="118" ry="163" stroke="#EAD7A0" stroke-width="2.9" stroke-dasharray="0 2.25" stroke-linecap="round" pathLength="360"/>
+    <!-- a smooth carved cove, lit from the top left -->
+    <ellipse cx="150" cy="215" rx="111" ry="155" stroke="url(#cove)" stroke-width="8"/>
+    <ellipse cx="150" cy="215" rx="114.6" ry="158.6" stroke="#5A3D14" stroke-width=".8" opacity=".7"/>
+    <ellipse cx="150" cy="215" rx="108.2" ry="152.2" stroke="#F6E8C2" stroke-width=".9" opacity=".8"/>
+    <!-- sight edge -->
+    <ellipse cx="150" cy="215" rx="106.5" ry="149.5" stroke="#E6D09A" stroke-width="1.6"/>
+    <ellipse cx="150" cy="215" rx="105" ry="148" stroke="#2A1C08" stroke-width="2"/>
+  </g>
+
+  <!-- side bosses with leaves -->
+  <use xlink:href="#sideleaf" href="#sideleaf"/>
+  <use xlink:href="#sideleaf" href="#sideleaf" transform="translate(300 0) scale(-1 1)"/>
+
+  <!-- shell crest -->
+  <use xlink:href="#volute" href="#volute"/>
+  <use xlink:href="#volute" href="#volute" transform="translate(300 0) scale(-1 1)"/>
+  <g transform="translate(150 50) scale(.78) translate(-150 -50)">
+    <path d="M150 52 C132 46 118 36 120 24 C128 12 142 8 150 8 C158 8 172 12 180 24 C182 36 168 46 150 52Z" fill="url(#leaf)" stroke="#5A3D14" stroke-width="1.2"/>
+    <g fill="none" stroke="#6A4A1C" stroke-width="1">
+      <path d="M150 50 C140 40 130 30 126 22"/><path d="M150 50 C144 36 140 22 139 12"/>
+      <path d="M150 50 L150 9"/>
+      <path d="M150 50 C156 36 160 22 161 12"/><path d="M150 50 C160 40 170 30 174 22"/>
+    </g>
+    <g fill="none" stroke="#F6E8C2" stroke-width=".7" opacity=".9" transform="translate(-1 0)">
+      <path d="M150 48 C140 38 131 29 127 22"/><path d="M150 48 C144 35 141 22 140 13"/>
+      <path d="M150 48 L150 10"/>
+    </g>
+    <circle cx="150" cy="52" r="6" fill="url(#boss)" stroke="#5A3D14" stroke-width="1"/>
+  </g>
+
+  <!-- leaf knot below -->
+  <g stroke="#5A3D14" stroke-width="1.2">
+    <path d="M150 396 C134 388 120 392 112 401 C126 403 140 402 150 396Z" fill="url(#leaf)"/>
+    <path d="M150 396 C166 388 180 392 188 401 C174 403 160 402 150 396Z" fill="url(#leaf)"/>
+    <path d="M150 396 C140 404 140 414 150 418 C160 414 160 404 150 396Z" fill="url(#leaf)"/>
+    <circle cx="150" cy="392" r="5.5" fill="url(#boss)"/>
+  </g>
+</svg>

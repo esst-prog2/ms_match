@@ -2,7 +2,7 @@
    tests/storage.test.js — does the closet keep its storage promise?
 
    A test would go red if 70 photos of median size no longer fit next to
-   the 21 demo pieces, or if the 71st looked added even though storage
+   the 20 demo pieces, or if the 71st looked added even though storage
    refused it.
 
    The numbers below are not taken from running the app (PLANNING_LOG.md,
@@ -20,7 +20,7 @@ const { startApp, run } = require('./harness');
 
 const QUOTA = 5 * 1024 * 1024;        // 5,242,880 characters, keys and values
 const PIECE_CHARS = 72.5 * 1024;      // 74,240 characters per stored piece
-const DEMO = 21;
+const DEMO = 20;
 const FIT = 70;                       // expected: this many of mine fit
 const REFUSED = FIT + 1;              // expected: this one is refused
 
