@@ -244,6 +244,21 @@
     }), { threshold: 0.12 });
     els.forEach(e => io.observe(e));
   })();
+  // Painted models: on this page the picker also offers five women from
+  // paintings (public domain, Wikimedia Commons), after the built-in photos
+  // and before any uploaded one. They are not stored, so the original page
+  // never lists them and falls back to its first model if one was chosen here.
+  (function () {
+    const painted = [
+      ['p-flora',    'Flora · Botticelli, Primavera, c. 1480',         'flora'],
+      ['p-ermine',   'Cecilia · Leonardo, Lady with an Ermine, 1490',  'ermine'],
+      ['p-eleonora', 'Eleonora · Bronzino, Eleonora di Toledo, 1545',  'eleonora'],
+      ['p-graham',   'Mrs Graham · Gainsborough, 1777',                'graham'],
+      ['p-madamex',  'Madame X · Sargent, 1884',                       'madamex'],
+    ].map(([id, name, file]) => ({ id, name, img: `renaissance/art/models/${file}.jpg` }));
+    models.splice(MODELS.length, 0, ...painted);
+    drawStage();                                   // app.js drew the picker before these existed
+  })();
   // The daily muse: the same quote all day, a new one tomorrow. Only short
   // quotes, so each one fits two lines in the narrow column.
   (function () {
