@@ -113,3 +113,4 @@
 2026-11-12 - The workflow uses actions/checkout v7, configure-pages v6, upload-pages-artifact v5 and deploy-pages v5, the latest major tags on 2026-11-12, and was rehearsed locally: the collected folder serves the promo page and both app pages, and returns 404 for spike/, the logs and docs/ - decided by Claude
 2026-11-12 - The promo-page branch is merged into main locally, as the renaissance-style branch was, and pushed in step 5 - decided by Inez
 2026-11-12 - GitHub Pages is turned on for esst-prog2/ms_match with GitHub Actions as its source, through the GitHub API with Inez's stored GitHub login (gh is not installed; Inez is an admin of the repository) - decided by Inez, done by Claude
+2026-11-12 - main is pushed to origin (esst-prog2/ms_match) and the promo page is live at https://esst-prog2.github.io/ms_match/promo/, the address handed in; only the promo page and the app are served - push decided by Inez, checks by Claude
