@@ -60,7 +60,7 @@ code { font: 500 .84em/1 var(--sans); background: var(--ivory); padding: .15em .
   grid-template-columns: var(--kal-w) minmax(0, 1fr);
   grid-template-areas: "kal opening" "kal leaves";
 }
-.opening { grid-area: opening; padding: 36px 64px 56px 56px; }
+.opening { grid-area: opening; padding: 44px 64px 56px 56px; }
 .kal     { grid-area: kal; }
 .leaves  { grid-area: leaves; padding: 0 64px 56px 56px; }
 
@@ -78,9 +78,9 @@ code { font: 500 .84em/1 var(--sans); background: var(--ivory); padding: .15em .
 /* a crop shows one region of a full screenshot without a second file */
 .crop { display: block; position: relative; overflow: hidden; background: var(--umber); }
 .crop img { position: absolute; max-width: none; height: auto; }
-.crop-hero  { aspect-ratio: 1220 / 716; }
-.crop-hero img  { width: 118.033%; left: -9.016%;  top: -13.408%; }
-.crop-sky   { aspect-ratio: 290 / 536; }
+.crop-tall  { aspect-ratio: 508 / 760; }
+.crop-tall img  { position: static; width: 100%; }
+.crop-sky  { aspect-ratio: 290 / 536; }
 .crop-sky img   { width: 496.552%; left: -37.931%; top: -13.806%; }
 .crop-match { aspect-ratio: 900 / 738; }
 .crop-match img { width: 160%;     left: -47.778%; top: -10.027%; }
@@ -96,18 +96,16 @@ code { font: 500 .84em/1 var(--sans); background: var(--ivory); padding: .15em .
 }
 
 /* ---------- the opening page --------------------------------------- */
-.miniature { margin: 0 auto; width: min(720px, 100%); text-align: center; }
+/* one manuscript text block; the miniature is set into its right side
+   and the text runs around it */
+.page { display: flow-root; max-width: 920px; }
+.miniature { float: right; width: 340px; margin: 6px 0 18px 48px; text-align: center; }
+.miniature .arch, .miniature .arch .crop { border-radius: 50% 50% 0 0 / 24% 24% 0 0; }
+.opening .rubric { font-size: 17px; }
 
-.incipit {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  gap: 48px;
-  align-items: start;
-}
 h1 {
   margin: 0;
-  font: 400 52px/1.06 var(--serif);
+  font: 400 58px/1.03 var(--serif);
   letter-spacing: -.01em;
   text-wrap: balance;
 }
@@ -116,13 +114,13 @@ h1::first-letter {
   float: left;
   margin: 8px 16px 0 0;
   padding: 12px 15px 6px;
-  font: 500 96px/.78 var(--serif);
+  font: 500 104px/.78 var(--serif);
   color: var(--gold-hi);
   background: var(--oxblood);
   border: 3px double var(--gold);
 }
-.lede { margin: 4px 0 0; font: 400 20px/1.5 var(--serif); }
-.who-line { margin: 10px 0 0; font: italic 400 20px/1.5 var(--serif); color: var(--sepia); }
+.lede { margin: 20px 0 0; font: 400 21px/1.5 var(--serif); max-width: 30em; }
+.who-line { margin: 18px 0 0; font: italic 400 20px/1.5 var(--serif); color: var(--sepia); max-width: 30em; }
 .actions { margin: 22px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
 .btn {
   display: inline-block;
@@ -246,7 +244,7 @@ h1::first-letter {
 @media (max-width: 1100px) {
   .opening { padding: 32px 40px 48px; }
   .leaves { padding: 0 40px 48px; }
-  .incipit { grid-template-columns: 1fr; gap: 18px; }
+  .miniature { width: 300px; margin-left: 36px; }
   .hour, .hour-5 { grid-template-columns: 96px minmax(0, 1fr); }
   .hour-1 .plate, .hour-5 .plate { grid-column: 2; margin-top: 24px; max-width: 360px; }
   .hour-5 .plate { max-width: 460px; }
@@ -262,20 +260,14 @@ h1::first-letter {
     grid-template-areas: "opening" "kal" "leaves";
   }
   .opening { padding: 18px 18px 30px; }
-  .miniature { width: min(230px, 62vw); }
-  .arch, .arch .crop { border-radius: 50% 50% 0 0 / 24% 24% 0 0; }
-  .crop-hero { aspect-ratio: 508 / 760; }
-  .crop-hero img { position: static; width: 100%; }
+  .miniature { float: none; width: min(230px, 62vw); margin: 0 auto 18px; }
   .gilt { padding: 8px; }
-  .rubric { font-size: 16.5px; }
-  .incipit { margin-top: 18px; display: flex; flex-direction: column; gap: 0; }
+  .rubric, .opening .rubric { font-size: 16.5px; }
   h1 { font-size: 34px; }
   h1::first-letter { font-size: 64px; padding: 9px 11px 4px; margin: 5px 11px 0 0; }
-  .incipit-text { display: flex; flex-direction: column; }
   .lede { margin-top: 12px; font-size: 18px; }
-  .actions { order: 1; margin-top: 16px; }
-  .who-line { order: 2; font-size: 18px; margin-top: 14px; }
-  .small { order: 3; }
+  .actions { margin-top: 16px; }
+  .who-line { font-size: 18px; margin-top: 14px; }
 
   .kal { position: static; max-height: none; overflow: visible; padding: 18px 0 20px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
   .kal .brand, .kal-marker { display: none; }
