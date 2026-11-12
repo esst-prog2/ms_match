@@ -73,3 +73,19 @@
 2026-10-29 - HW8: the demo moves to the renaissance look. README section 1 is now five sentences on renaissance/index.html (Flora as the model, a dry 16° day, Match me, re-spinning the shoes, the daily muse and stylist's note, wear it and the calendar), shown as screenshots; a "Why a second look" paragraph follows it; recorded as the OpenSpec change renaissance-demo, archived 2026-10-29 - decided by Inez, wording by Claude
 2026-11-12 - Promo page homework: after each step, commit and add a row to PROCESS.md (the step, what the tool did, what I decided); the rule is also written into AGENTS.md so it survives a new session - decided by Inez
 2026-11-12 - The promo page homework is done on its own branch, promo-page, and merged into main before GitHub Pages publishes it - decided by Inez
+2026-11-12 - Step 2 tool: gstack 1.99.1 installed globally in ~/.claude/skills/gstack, with Bun 1.4.4 from winget; nothing of it goes into the repo - decided by Inez, install location by Claude
+2026-11-12 - gstack keeps its learnings to this project only (cross-project learnings off) - decided by Inez
+2026-11-12 - /office-hours runs in builder mode, since this is a course project, not a startup - decided by Inez
+2026-11-12 - Promo page audience: people like me, who would rather decide in one click, like a page that is beautiful to open every morning and keep their photos to themselves - decided by Inez
+2026-11-12 - The promo page opens on Flora in her gold frame, dressed for the day's forecast - decided by Inez
+2026-11-12 - Try it is live: the main button opens renaissance/, the original page is a secondary link; the promo page lives in promo/ and the address handed in is https://esst-prog2.github.io/ms_match/promo/ (the /docs route, with no live app, was rejected) - decided by Inez
+2026-11-12 - The promo page's first sentence is about the weather deciding the outfit; privacy and the morning ritual come lower - decided by Inez
+2026-11-12 - A web search with generic terms was allowed; it showed Stylebook also keeps its data on the device, so the page names no other app - search decided by Inez, conclusion by Claude
+2026-11-12 - Promo page premises: English; no other app named; Try it walks through the demo closet, and a real closet belongs in a local copy because every esst-prog2 project on Pages shares the origin esst-prog2.github.io (one localStorage, one location permission); no invented testimonials or user counts; first person, nothing personal - proposed by Claude, agreed by Inez
+2026-11-12 - No second AI opinion before the drafts; the Impeccable critique in step 3 gives the outside view - decided by Inez
+2026-11-12 - Promo page structure B, A morning in the atelier: hero, the README demo as five steps with screenshots under What it's for, then Who it's for, Your photos stay with you, How to try it, footer - decided by Inez
+2026-11-12 - The copy says what the code does: the look waiting on arrival and the re-spin of one piece follow warmth and rain, while Match me is random with only a rain filter; making Match me follow warmth is left open - found by the gstack reviewer, wording by Claude
+2026-11-12 - A demo caveat sits under Try it now, and the privacy section tells live visitors to use the demo closet and allow location only once or decline - proposed by Claude after the review, approved by Inez
+2026-11-12 - What GitHub Pages serves (the whole main, main without spike/, or an Actions workflow that uploads only promo/, renaissance/, index.html, css/, js/ and assets/) is decided before Pages is turned on - proposed by Claude, decision left to Inez
+2026-11-12 - The promo page content is approved with the reviewer's eleven minor fixes (Unsplash credit, the form's own labels, Python 3, .nojekyll, screenshot staging) - decided by Inez
+2026-11-12 - The approved content plan is kept in the repo in full as docs/designs/promo-page-content.md - decided by Inez
