@@ -89,3 +89,15 @@
 2026-11-12 - What GitHub Pages serves (the whole main, main without spike/, or an Actions workflow that uploads only promo/, renaissance/, index.html, css/, js/ and assets/) is decided before Pages is turned on - proposed by Claude, decision left to Inez
 2026-11-12 - The promo page content is approved with the reviewer's eleven minor fixes (Unsplash credit, the form's own labels, Python 3, .nojekyll, screenshot staging) - decided by Inez
 2026-11-12 - The approved content plan is kept in the repo in full as docs/designs/promo-page-content.md - decided by Inez
+2026-11-12 - No further gstack plan review after step 2; the look and the outside critique are left to Impeccable in step 3, as the homework orders - decided by Inez
+2026-11-12 - Step 3 tool: Impeccable 4.8.2 installed globally with its CLI (skill in ~/.claude/skills/impeccable, four agents in ~/.claude/agents), nothing in the repo - decided by Inez
+2026-11-12 - Impeccable runs without its design hook, so nothing runs on file edits in other projects; it can be added later - decided by Inez
+2026-11-12 - Impeccable telemetry is off (~/.impeccable/config.json); the visual-direction catalog is still fetched, but no choice is recorded - decided by Inez
+2026-11-12 - PRODUCT.md written with Impeccable init: users (people like me; promo visitors second), what the app may and may not claim, and the voice (English, first person, the app's own words) - answers by Inez, file by Claude
+2026-11-12 - The promo page keeps the renaissance world (palette, gilded frames, the same three typefaces) instead of a new look - decided by Inez
+2026-11-12 - The promo page shows real screenshots of the running atelier, taken in a clean browser profile with the demo closet only - decided by Inez
+2026-11-12 - What would make the promo page wrong even if polished: an untrue claim, or looking like a generic landing page - decided by Inez
+2026-11-12 - Of three structures dealt by Impeccable's roll (exhibition catalogue, salon hang, book of hours), the promo page takes the book of hours: the morning as five hours in a margin calendar, Flora as the opening miniature - decided by Inez
+2026-11-12 - The promo page loads its fonts from Google Fonts, like the app pages - decided by Inez
+2026-11-12 - The design brief (docs/designs/promo-page-brief.md) is approved on the condition that the existing pages are not harmed: index.html, css/, js/ and renaissance/ stay unchanged, checked with git diff and node --test before every commit - decided by Inez
+2026-11-12 - Step 3 is committed in three parts, after shape, generate and critique, each with its own PROCESS.md row (3a, 3b, 3c) - decided by Inez
