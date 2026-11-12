@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ms. Match: let today's weather pick today's outfit</title>
+  <meta name="description" content="Ms. Match reads the forecast and dresses your model from your own closet. A browser-only closet app with no account and no upload. Try the live atelier with a demo closet.">
+  <meta name="theme-color" content="#F6F1E7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cinzel:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="folio">
+
+  <header class="opening" id="top">
+    <figure class="miniature">
+      <div class="gilt arch">
+        <picture class="crop crop-hero">
+          <source media="(max-width: 760px)" srcset="img/hero-flora.jpg" width="508" height="760">
+          <img src="img/hour-1-sky.jpg" width="1440" height="900" fetchpriority="high"
+               alt="The Ms. Match atelier on arrival: the forecast for Budapest, 8° and rain, beside Botticelli's Flora in a gold frame, dressed in a denim shirt, blue jeans, black boots and a pink bag.">
+        </picture>
+      </div>
+      <figcaption class="rubric">Flora, after Botticelli. Dressed for 8° and rain. Budapest, 12 November 2026.</figcaption>
+    </figure>
+
+    <div class="incipit">
+      <h1>Let today's weather pick today's outfit.</h1>
+      <div class="incipit-text">
+        <p class="lede">Ms. Match reads the forecast and dresses your model from your own closet: warm enough for the day, rain-proof when rain is likely, each piece pinned up beside the model in a gold frame.</p>
+        <p class="who-line">For people who would rather decide in one click than stand in front of the wardrobe.</p>
+        <p class="actions">
+          <a class="btn" href="../renaissance/">Try it now</a>
+          <a class="quiet" href="https://github.com/esst-prog2/ms_match">See the code on GitHub</a>
+        </p>
+        <p class="small">No sign-up. The live atelier is a demo: it opens with a demo closet and five painted models, so you can press <b>Match me</b> straight away. Keep your own photos for your own copy.</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="kal" aria-label="The hours of the morning">
+    <p class="brand">Ms. Match</p>
+    <p class="kal-title">The hours of the morning</p>
+    <ol class="kal-hours">
+      <li><a href="#hour-1"><span class="hr">I · 7:00</span>Check the sky</a></li>
+      <li><a href="#hour-2"><span class="hr">II · 7:01</span>Press Match me</a></li>
+      <li><a href="#hour-3"><span class="hr">III · 7:02</span>Change one piece</a></li>
+      <li><a href="#hour-4"><span class="hr">IV · 7:03</span>Read something new</a></li>
+      <li><a href="#hour-5"><span class="hr">V · 7:04</span>Wear it</a></li>
+    </ol>
+    <p class="kal-note">An example morning. Ms. Match keeps no clock.</p>
+    <ul class="kal-after">
+      <li><a href="#who">Who it's for</a></li>
+      <li><a href="#photos">Your photos stay with you</a></li>
+      <li><a href="#try">How to try it</a></li>
+    </ul>
+    <span class="kal-marker" aria-hidden="true"></span>
+  </nav>
+
+  <div class="leaves">
+
+    <section class="what" aria-labelledby="what-title">
+      <h2 id="what-title">What it's for</h2>
+      <p class="sub">A morning in the atelier: Budapest, 12 November 2026, with 8° and rain in the forecast.</p>
+
+      <article class="hour hour-1" id="hour-1">
+        <div class="hour-text">
+          <h3><span class="hr">I · 7:00</span> Check the sky</h3>
+          <p>Answer the location prompt, or say no and get Budapest's forecast instead. On this morning it was 8°, with rain all but certain. Once the forecast is in, Flora is dressed for it: a denim shirt, blue jeans, black boots and a pink bag, the warmth and the rain worked out from the forecast.</p>
+        </div>
+        <figure class="plate plate-narrow">
+          <div class="gilt"><div class="crop crop-sky"><img src="img/hour-1-sky.jpg" width="1440" height="900" loading="lazy"
+            alt="The forecast panel: 8°, rain, low 5°, rain 100%, Budapest as the default place, and the hint that rain is likely, so only rain-proof pieces."></div></div>
+          <figcaption class="rubric">The sky, as the atelier reads it.</figcaption>
+        </figure>
+      </article>
+
+      <article class="hour hour-2" id="hour-2">
+        <div class="hour-text">
+          <h3><span class="hr">II · 7:01</span> Press Match me for something new</h3>
+          <p>The closet flicks past and slows down, <i>Bellissima.</i> appears over the painting, and a new look settles, up to four pieces, each in its own small gold frame with its name below. This time: a black tee, black jeans, black boots and a red beret. On a rainy day it keeps to rain-proof pieces.</p>
+        </div>
+        <figure class="plate plate-wide">
+          <div class="gilt arch-soft"><div class="crop crop-match"><img src="img/hour-2-match.jpg" width="1440" height="900" loading="lazy"
+            alt="After Match me: Flora in a black tee, black jeans, black boots and a red beret, the four pieces listed beside her under the Match me button."></div></div>
+          <figcaption class="rubric">One gesture, one outfit.</figcaption>
+        </figure>
+      </article>
+
+      <article class="hour hour-3" id="hour-3">
+        <figure class="plate plate-column">
+          <div class="gilt"><div class="crop crop-respin"><img src="img/hour-3-respin.jpg" width="1440" height="900" loading="lazy"
+            alt="The look column after the re-spin: the red beret has given way to the brown leather bag, and each card carries its own re-spin button."></div></div>
+          <figcaption class="rubric">The beret, spun away.</figcaption>
+        </figure>
+        <div class="hour-text">
+          <h3><span class="hr">III · 7:02</span> Change one piece</h3>
+          <p>Not the beret today? Press the ↻ on its card and only that piece spins again, landing on the one that best suits the day's warmth and rain: here, the brown leather bag. A piece spun away stays out of that slot until the next Match me, as if it were in the laundry.</p>
+        </div>
+      </article>
+
+      <article class="hour hour-4" id="hour-4">
+        <div class="hour-text">
+          <h3><span class="hr">IV · 7:03</span> Read something new</h3>
+          <p>Under the painting, the daily muse brings a fashion quote, and the stylist's note sums up the day.</p>
+        </div>
+        <div class="readings">
+          <blockquote class="reading"><p>When in doubt, wear red.</p><cite>Bill Blass, the daily muse</cite></blockquote>
+          <blockquote class="reading"><p>Rain on the way — black boots will survive it.</p><cite>The stylist's note</cite></blockquote>
+        </div>
+        <figure class="plate plate-strip">
+          <div class="gilt thin"><img src="img/hour-4-muse-note.jpg" width="1240" height="240" loading="lazy"
+            alt="The daily muse and the stylist's note as they appear under the painting, with the model picker of five painted women between them."></div>
+        </figure>
+      </article>
+
+      <article class="hour hour-5" id="hour-5">
+        <div class="hour-text">
+          <h3><span class="hr">V · 7:04</span> Wear it</h3>
+          <p><b>Wear it today</b> saves the look to your outfit calendar. The status bar answers <span class="status">wearing it today · 2026-11-12 saved to the calendar</span>, and next month you can still see what you wore on which day.</p>
+        </div>
+        <figure class="plate plate-cal">
+          <div class="gilt"><div class="crop crop-cal"><img src="img/hour-5-calendar.jpg" width="1440" height="900" loading="lazy"
+            alt="The outfit calendar for November 2026, with that day's look pinned on the 12th."></div></div>
+          <figcaption class="rubric">What I wore, November 2026.</figcaption>
+        </figure>
+      </article>
+    </section>
+
+    <section class="who" id="who" aria-labelledby="who-title">
+      <h2 id="who-title">Who it's for</h2>
+      <p class="text-hand">I built Ms. Match for myself, and it is for people like me. You would rather decide what to wear in one click than stand in front of the wardrobe. You like opening a page that is beautiful to look at every morning. And you would rather keep photos of your clothes, and of yourself, to yourself.</p>
+    </section>
+
+    <section class="photos" id="photos" aria-labelledby="photos-title">
+      <h2 id="photos-title">Your photos stay with you</h2>
+      <p>There is no account and no server of mine. Your closet, your saved looks and your calendar are kept in your browser, and Ms. Match never sends a photo or anything from your closet anywhere. It makes two outside calls: Open-Meteo, which receives your coordinates (or Budapest's) to look up the forecast, and Google Fonts for the typefaces. Like any website, both see your IP address.</p>
+      <p><em class="rub-lead">One caveat for the live demo:</em> it runs on <code>esst-prog2.github.io</code>, an address shared by other student projects, and browser storage and a location permission belong to the whole address. Those pages could read what you store there. So on the live demo, use the demo closet, and if your browser asks for your location, allow it only this once or say no: Budapest's forecast works just as well. Your real photos belong in your own copy.</p>
+    </section>
+
+    <section class="try" id="try" aria-labelledby="try-title">
+      <h2 id="try-title">How to try it</h2>
+      <ol class="steps">
+        <li><b>Open the live atelier.</b> It starts with a demo closet of 20 pieces and five painted women as models, Flora first. No upload needed.</li>
+        <li><b>Press Match me,</b> re-spin a piece, wear the look, then open <b>Outfit calendar</b>.</li>
+        <li><b>For your own closet, run your own copy</b> on your computer, where your photos stay on your machine. You need Python 3: download the code from GitHub, run <code>python -m http.server 8000</code> in the folder and open <code>http://localhost:8000/renaissance/</code>. Under <b>Add a piece</b>, add your clothes as photos, each with a category, a warmth (light, mid or warm), whether it is <b>rain ok</b> and whether it is a <b>dress</b>; then add a full-length photo of yourself under <b>Change model</b>, <b>+ your photo</b>.</li>
+      </ol>
+      <p class="actions">
+        <a class="btn" href="../renaissance/">Try it now</a>
+        <a class="quiet" href="https://github.com/esst-prog2/ms_match">See the code on GitHub</a>
+      </p>
+      <p class="small">Prefer polaroids? <a href="../">The original look</a> is still there, with the same closet and calendar.</p>
+    </section>
+
+    <footer class="colophon">
+      <p>Ms. Match, a project for the Advanced programming course, 2026. <a href="https://github.com/esst-prog2/ms_match">Code on GitHub</a>.</p>
+      <p>Paintings: public domain, via Wikimedia Commons. Clothes photos: Unsplash. Forecast: <a href="https://open-meteo.com/">Open-Meteo</a>. Screenshots: the live atelier with its demo closet, Budapest, 12 November 2026.</p>
+    </footer>
+  </div>
+</main>
+<script src="hours.js" defer></script>
+</body>
+</html>
