@@ -44,7 +44,11 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 5px; 
 a:hover { color: var(--oxblood); }
 :focus-visible { outline: 2px solid var(--oxblood); outline-offset: 4px; border-radius: 4px; }
 b { font-weight: 600; }
-code { font: 500 .84em/1 var(--sans); background: var(--ivory); padding: .15em .4em; border-radius: 4px; overflow-wrap: anywhere; }
+code { font: 500 .84em/1 var(--sans); background: var(--ivory); padding: .15em .4em; border-radius: 4px; white-space: nowrap; }
+.nobr { white-space: nowrap; }
+/* no lone words at the end of a paragraph, no lopsided headings */
+p, li { text-wrap: pretty; }
+h2, h3 { text-wrap: balance; }
 
 /* ---------- the folio ---------------------------------------------- */
 .folio {
@@ -196,7 +200,7 @@ h1::first-letter {
   font: 500 11.5px/1 var(--caps); letter-spacing: .22em; color: var(--oxblood);
 }
 .hour-text { grid-column: 2; }
-.hour-text p { margin: 12px 0 0; font: 400 20px/1.55 var(--serif); max-width: 34em; }
+.hour-text p { margin: 12px 0 0; font: 400 20px/1.55 var(--serif); max-width: 31em; }
 .plate { margin: 0; }
 
 .hour-1 .plate { grid-column: 3; }
@@ -226,7 +230,7 @@ h1::first-letter {
 
 .who, .photos, .try { margin-top: 104px; padding-top: 64px; border-top: 1px solid var(--hair); }
 .text-hand { margin: 18px 0 0; font: 400 28px/1.42 var(--serif); max-width: 30em; }
-.photos p { margin: 18px 0 0; font: 400 20px/1.55 var(--serif); max-width: 36em; }
+.photos p { margin: 18px 0 0; font: 400 20px/1.55 var(--serif); max-width: 31em; }
 .rub-lead { color: var(--oxblood); }
 
 .steps { margin: 22px 0 0; padding-left: 2.2em; list-style: upper-roman; max-width: 38em; }

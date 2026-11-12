@@ -17,7 +17,7 @@ OWN-WORLD: The renaissance atelier's own materials: linen vellum ground inside a
 
 STORY: The visitor sees Flora dressed for the day's forecast, reads that the weather picks the outfit from your own closet, follows five hours of one real morning (12 November 2026, Budapest, 8° and rain), learns who it is for and that photos stay in the browser, and clicks Try it now.
 
-FIRST VIEWPORT: A margin calendar of the five hours at left. In the main column, an arch-topped miniature of the atelier on arrival, about 760 wide; under it the oxblood rubric caption; then an illuminated initial L in an oxblood square opening the headline, one line on what it does and for whom, and Try it now in oxblood beside See the code, all above the fold at 1440 by 900.
+FIRST VIEWPORT: A margin calendar of the five hours at left. In the main column, one manuscript text block (chosen with Impeccable generate on 2026-11-12): an illuminated initial L in an oxblood square opens the headline, then the lede, Try it now in oxblood beside See the code, the who line and the small print; Flora's arch-topped portrait miniature, about 340 wide, is set into the block's right side with the oxblood rubric under it, all above the fold at 1440 by 900. Try it now opens the atelier itself (../renaissance/#atelier).
 
 FORM: Book of hours, position 2 on the ordered list. seed:d386e07b7a0706a7. Signature interaction: the margin calendar is sticky and marks the hour being read with a moving gold rule.
 

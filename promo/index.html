@@ -27,11 +27,11 @@
       <h1>Let today's weather pick today's outfit.</h1>
       <p class="lede">Ms. Match reads the forecast and dresses your model from your own closet: warm enough for the day, rain-proof when rain is likely, each piece pinned up beside the model in a gold frame.</p>
       <p class="actions">
-        <a class="btn" href="../renaissance/">Try it now</a>
+        <a class="btn" href="../renaissance/#atelier">Try it now</a>
         <a class="quiet" href="https://github.com/esst-prog2/ms_match">See the code on GitHub</a>
       </p>
       <p class="who-line">For people who would rather decide in one click than stand in front of the wardrobe.</p>
-      <p class="small">No sign-up. The live atelier is a demo: it opens with a demo closet and five painted models, so you can press <b>Match me</b> straight away. Keep your own photos for your own copy.</p>
+      <p class="small">No sign-up. The live atelier is a demo: it opens with a demo closet and five painted models, so you can press <b>Match me</b> straight away. If your browser asks for your location, no is fine: it uses Budapest. Keep your own photos for your own copy.</p>
     </div>
   </header>
 
@@ -131,7 +131,7 @@
 
     <section class="photos" id="photos" aria-labelledby="photos-title">
       <h2 id="photos-title">Your photos stay with you</h2>
-      <p>There is no account and no server of mine. Your closet, your saved looks and your calendar are kept in your browser, and Ms. Match never sends a photo or anything from your closet anywhere. It makes two outside calls: Open-Meteo, which receives your coordinates (or Budapest's) to look up the forecast, and Google Fonts for the typefaces. Like any website, both see your IP address.</p>
+      <p>There is no account and no server of mine. Your closet, your saved looks and your calendar are kept in your browser, and Ms. Match never sends a photo or anything from your closet anywhere. It makes two outside calls: <span class="nobr">Open-Meteo</span>, which receives your coordinates (or Budapest's) to look up the forecast, and Google Fonts for the typefaces. Like any website, both see your IP address.</p>
       <p><em class="rub-lead">One caveat for the live demo:</em> it runs on <code>esst-prog2.github.io</code>, an address shared by other student projects, and browser storage and a location permission belong to the whole address. Those pages could read what you store there. So on the live demo, use the demo closet, and if your browser asks for your location, allow it only this once or say no: Budapest's forecast works just as well. Your real photos belong in your own copy.</p>
     </section>
 
@@ -139,11 +139,11 @@
       <h2 id="try-title">How to try it</h2>
       <ol class="steps">
         <li><b>Open the live atelier.</b> It starts with a demo closet of 20 pieces and five painted women as models, Flora first. No upload needed.</li>
-        <li><b>Press Match me,</b> re-spin a piece, wear the look, then open <b>Outfit calendar</b>.</li>
+        <li><b>Press Match me,</b> re-spin a piece, wear the look, then open <b class="nobr">Outfit calendar</b>.</li>
         <li><b>For your own closet, run your own copy</b> on your computer, where your photos stay on your machine. You need Python 3: download the code from GitHub, run <code>python -m http.server 8000</code> in the folder and open <code>http://localhost:8000/renaissance/</code>. Under <b>Add a piece</b>, add your clothes as photos, each with a category, a warmth (light, mid or warm), whether it is <b>rain ok</b> and whether it is a <b>dress</b>; then add a full-length photo of yourself under <b>Change model</b>, <b>+ your photo</b>.</li>
       </ol>
       <p class="actions">
-        <a class="btn" href="../renaissance/">Try it now</a>
+        <a class="btn" href="../renaissance/#atelier">Try it now</a>
         <a class="quiet" href="https://github.com/esst-prog2/ms_match">See the code on GitHub</a>
       </p>
       <p class="small">Prefer polaroids? <a href="../">The original look</a> is still there, with the same closet and calendar.</p>
@@ -151,7 +151,7 @@
 
     <footer class="colophon">
       <p>Ms. Match, a project for the Advanced programming course, 2026. <a href="https://github.com/esst-prog2/ms_match">Code on GitHub</a>.</p>
-      <p>Paintings: public domain, via Wikimedia Commons. Clothes photos: Unsplash. Forecast: <a href="https://open-meteo.com/">Open-Meteo</a>. Screenshots: the live atelier with its demo closet, Budapest, 12 November 2026.</p>
+      <p>Paintings: public domain, via Wikimedia Commons. Clothes photos: Unsplash. Forecast: <a class="nobr" href="https://open-meteo.com/">Open-Meteo</a>. Screenshots: the live atelier with its demo closet, Budapest, 12 November 2026.</p>
     </footer>
   </div>
 </main>
