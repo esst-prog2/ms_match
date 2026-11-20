@@ -300,3 +300,20 @@ h1::first-letter {
   .who, .photos, .try { margin-top: 64px; padding-top: 44px; }
   .status { white-space: normal; }
 }
+
+/* Promo video */
+.promo-video-wrap {
+  margin: 48px 0;
+  text-align: center;
+}
+.promo-video {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 24px 60px -24px rgba(28, 23, 19, 0.4);
+}
+.promo-video-caption {
+  margin-top: 16px;
+  font: italic 400 18px/1.4 var(--serif);
+  color: var(--sepia);
+}

@@ -4,3 +4,7 @@ Thumbs.db
 
 # duplicate of .claude/skills, left by `openspec init --tools agents`
 .agents/
+
+# HyperFrames build tools
+_hyperframes/
+promo-video/
