@@ -1,4 +1,4 @@
-# Publishes only the promo page and the app to GitHub Pages.
+# Publishes only the promo page, the demo slides and the app to GitHub Pages.
 # Everything else in the repository (spike/, the logs, reviews/, openspec/,
 # docs/) stays on github.com and does not go to github.io.
 name: Publish to GitHub Pages
@@ -29,7 +29,7 @@ jobs:
       - name: Collect the promo page and the app
         run: |
           mkdir _site
-          cp -r index.html css js assets renaissance promo _site/
+          cp -r index.html css js assets renaissance promo slides _site/
           touch _site/.nojekyll
           find _site -type f | sort
 
