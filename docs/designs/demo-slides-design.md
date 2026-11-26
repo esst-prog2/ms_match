@@ -81,11 +81,11 @@ Slide titles follow the teacher's wording. Labels are a first draft and Inez app
 
 **1 · For whom, and why**
 - Picture: Flora in her gold frame, dressed for the day. Use a still from the demo recording, so it matches slide 2.
-- Words: *For people who'd rather decide in one click than stand in front of the wardrobe.* / *Why: every morning brings different weather.* Small line: *Ms. Match · Inez · free · no account · photos stay in your browser*.
+- Words: *For people who'd rather decide in one click than stand at the wardrobe.* / *Why: mornings are short, and I'm always late.* (Changed after Inez's review on 2026-11-26: the point is the time it saves, not the weather, since she can check the weather herself.) Small line: *Ms. Match · Inez · free · no account · photos stay in your browser*.
 - Notes: who it is for (people like me), the problem (a full closet and nothing that fits today's weather), the main point said for the first time.
 
 **2 · The demo**
-- A screen recording of a real run of the live atelier (`renaissance/#atelier`), played one segment per click and paused at the end of each, with a numbered caption of three to five words:
+- A screen recording of a real run of the live atelier (`renaissance/#atelier`), with a numbered list of five steps, three to five words each. *Changed after Inez's review on 2026-11-26:* the recording no longer plays one segment per click. It starts by itself when the slide opens and plays once to the end, and each step on the left lights up while the video is inside it, with a thin gold line showing how far. A click on the video pauses it, and a click on a step plays from that step. The steps:
   1. Today's sky. (forecast, and Flora already dressed for it)
   2. One tap: Match me. (the closet spins, *Bellissima.*, the look settles)
   3. Spin just one piece. (the ↻ on the extra: only that piece changes)
@@ -126,7 +126,7 @@ Slide titles follow the teacher's wording. Labels are a first draft and Inez app
 - A visible cursor, drawn by a small script injected into the recording browser only (never into the app's files), so viewers see where each click lands.
 - The status bar and the Outfit calendar button sit below the atelier, so steps 4 and 5 need a smooth scroll in the recording.
 - Encoded as H.264 MP4 without sound, with a poster image, in `slides/media/`. A few MB at most.
-- Segment boundaries live as a list of times in the slide's script, like the teacher's deck: next plays the following segment and pauses at its end, and going back shows the previous step's last frame.
+- Step boundaries live as a list of times in the slide's script; the script lights up the step the video is in (see the change above).
 - Every frame is checked for anything personal before it is committed.
 
 ## Speaker notes
