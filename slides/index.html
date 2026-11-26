@@ -114,7 +114,6 @@
       font: 500 15px/1 var(--caps); color: var(--gold); border: 1px solid rgba(180,143,85,.7);
       transition: background .5s var(--ease), color .5s var(--ease);
     }
-    .steps li { cursor: pointer; }
     .steps .t { position: relative; padding-bottom: 8px; }
     /* how far the video is into this step: a thin gold-leaf line under the active one */
     .steps .bar {
@@ -269,14 +268,18 @@
         <p class="small">A real run of the live atelier · Budapest, 26 November 2026, 3° and rain</p>
       </div>
       </div>
+      <span class="fragment demo-step" aria-hidden="true"></span>
+      <span class="fragment demo-step" aria-hidden="true"></span>
+      <span class="fragment demo-step" aria-hidden="true"></span>
+      <span class="fragment demo-step" aria-hidden="true"></span>
       <aside class="notes">
-        <p>The video starts by itself and runs about 36 seconds; the steps on the left light up as it goes. A click on the video pauses it, a click on a step plays that step again.</p>
+        <p>The video starts by itself: the sky, and the cursor stops on Match me. Each click presses the next button in the video and stops on the one after.</p>
         <p>This is a real run of the live app, recorded this week on a rainy morning in Budapest.</p>
-        <p><strong>1 · Sky.</strong> First, the sky: three degrees and rain. When I open it, Flora is already dressed for it.</p>
-        <p><strong>2 · Match me.</strong> If I want something new, I press Match me. The closet spins, "Bellissima", and a new look settles: a knit sweater, blue jeans, black boots and a red beret. On a rainy day it only takes rain-proof pieces.</p>
-        <p><strong>3 · One piece.</strong> Not in the mood for the beret? I spin just that one piece. It lands on the striped scarf: warm, and rain-proof.</p>
-        <p><strong>4 · Wear it.</strong> Wear it today.</p>
-        <p><strong>5 · Remembered.</strong> And it is remembered: the outfit calendar shows today with the look.</p>
+        <p><strong>1 · Sky</strong> (plays by itself). First, the sky: three degrees and rain. When I open it, Flora is already dressed for it.</p>
+        <p><strong>[click] 2 · Match me.</strong> If I want something new, I press Match me. The closet spins, "Bellissima", and a new look settles: a knit sweater, blue jeans, black boots and a red beret. On a rainy day it only takes rain-proof pieces.</p>
+        <p><strong>[click] 3 · One piece.</strong> Not in the mood for the beret? I spin just that one piece. It lands on the striped scarf: warm, and rain-proof.</p>
+        <p><strong>[click] 4 · Wear it.</strong> Wear it today.</p>
+        <p><strong>[click] 5 · Remembered.</strong> And it is remembered: the outfit calendar shows today with the look.</p>
         <p>That was half a minute, and I'm dressed. The weather picked the outfit, in one click.</p>
       </aside>
     </section>
@@ -416,40 +419,46 @@
 <script src="reveal/reveal.js"></script>
 <script src="reveal/plugin/notes/notes.js"></script>
 <script>
-  // The demo slide: the recording plays by itself once the slide is shown, and the
-  // step on the left lights up while the video is inside it. A click on the video
-  // pauses or resumes it; a click on a step plays from that step.
-  // Step boundaries, in seconds, from the recording's own marks.
+  // The demo slide, step by step: when the slide opens, the recording plays the sky and
+  // stops with the cursor on Match me. Every "next" clicks that button in the video and
+  // plays on until the cursor rests on the next one. The step on the left that the video
+  // is in lights up. A click on the video pauses or resumes it.
   (function () {
-    var STEPS = [0, 4.38, 13.92, 19.83, 28.53, 36.13];
+    var STEPS = [0, 4.38, 13.92, 19.83, 28.53, 36.13]; // where each step of the list begins
+    var STOPS = [5.5, 14.95, 20.85, 29.65, 36.13];      // the video waits here, the cursor on the next button
     var slide = document.getElementById('demo-slide');
     var video = document.getElementById('demo');
     var items = document.querySelectorAll('#steps li');
     var bars = document.querySelectorAll('#steps .bar');
+    var stopAt = STOPS[0];
 
+    function shown() { return slide.querySelectorAll('.demo-step.visible').length; }
     function stepAt(t) { var k = 0; for (var i = 1; i < 5; i++) if (t >= STEPS[i] - 0.04) k = i; return k; }
     function mark() {
       var t = video.currentTime, k = stepAt(t);
       var into = Math.min(1, Math.max(0, (t - STEPS[k]) / (STEPS[k + 1] - STEPS[k])));
-      items.forEach(function (li, i) {
-        li.classList.toggle('on', i === k);
-        li.classList.toggle('done', i < k);
-      });
+      items.forEach(function (li, i) { li.classList.toggle('on', i === k); li.classList.toggle('done', i < k); });
       bars.forEach(function (bar, i) { bar.style.transform = 'scaleX(' + (i === k ? into : 0) + ')'; });
     }
-    function loop() { mark(); if (!video.paused && !video.ended) requestAnimationFrame(loop); }
-    function play() { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
-    function start() { video.pause(); video.currentTime = 0; mark(); play(); }
+    function watch() {
+      mark();
+      if (video.paused) return;
+      if (video.currentTime >= stopAt - 0.02) { video.pause(); video.currentTime = stopAt; mark(); return; }
+      requestAnimationFrame(watch);
+    }
+    function play() { var p = video.play(); if (p && p.catch) p.catch(function () {}); requestAnimationFrame(watch); }
+    function playTo(from, to) { video.pause(); stopAt = to; video.currentTime = from; mark(); play(); }
+    function rest(n) { video.pause(); stopAt = STOPS[n]; video.currentTime = STOPS[n]; mark(); }
+    function enter() { var n = shown(); if (n === 0) playTo(0, STOPS[0]); else rest(n); }
 
-    video.addEventListener('play', function () { requestAnimationFrame(loop); });
-    ['pause', 'seeked', 'ended', 'loadedmetadata'].forEach(function (ev) { video.addEventListener(ev, mark); });
-    video.addEventListener('click', function () { if (video.paused) play(); else video.pause(); });
-    items.forEach(function (li, i) {
-      li.addEventListener('click', function () { video.currentTime = STEPS[i]; mark(); play(); });
+    ['seeked', 'loadedmetadata', 'pause'].forEach(function (ev) { video.addEventListener(ev, mark); });
+    video.addEventListener('click', function () {
+      if (video.paused && video.currentTime < stopAt - 0.05) play(); else video.pause();
     });
-
-    Reveal.on('slidechanged', function (e) { if (e.currentSlide === slide) start(); else video.pause(); });
-    Reveal.on('ready', function (e) { if (e.currentSlide === slide) start(); else mark(); });
+    Reveal.on('fragmentshown', function (e) { if (slide.contains(e.fragment)) { var n = shown(); playTo(STOPS[n - 1], STOPS[n]); } });
+    Reveal.on('fragmenthidden', function (e) { if (slide.contains(e.fragment)) rest(shown()); });
+    Reveal.on('slidechanged', function (e) { if (e.currentSlide === slide) enter(); else video.pause(); });
+    Reveal.on('ready', function (e) { if (e.currentSlide === slide) enter(); else mark(); });
   })();
 
   Reveal.initialize({
